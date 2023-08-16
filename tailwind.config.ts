@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-
+import tailwindcssPlugins from 'tailwindcss/plugin'
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,13 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
+      boxShadow:{
+        primary: '0 15px 35px rgba(0 0 0/.15)'
+      }
+     
     },
   },
   plugins: [],
+  corePlugins: {
+    preflight: false,
+  }
 }
 export default config
