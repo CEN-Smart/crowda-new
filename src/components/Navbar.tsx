@@ -34,19 +34,19 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div className={classNames(`
-      absolute z-[4] pt-6 md:pt-0 drop-shadow-2xl bg-white shadow-primary border-b border-black flex items-center justify-between md:hidden w-[70%] transform transition duration-300`, {
+      absolute z-[4] pt-[1.3rem] md:pt-0 drop-shadow-2xl bg-white shadow-primary border-b border-black flex items-center justify-between md:hidden w-[70%] transform transition duration-300`, {
         '-translate-x-full': !isMenuOpen,
         'translate-x-0': isMenuOpen,
       })}>
 
 
         {/* Logo to show on mobile view */}
-        <div className={classNames(`pb-5   pl-4`)}>
+        <div className={classNames(`pb-[0.9rem]   pl-4`)}>
           <Logo onClose={() => handleMenu(false)} />
         </div>
         <span onClick={
           () => handleMenu(false)
-        } className={classNames(`pb-5   cursor-pointer pr-4`)} > <AiOutlineClose size={24} /> </span>
+        } className={classNames(`pb-[0.9rem]   cursor-pointer pr-4`)} > <AiOutlineClose size={24} /> </span>
       </div>
 
 

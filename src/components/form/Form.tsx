@@ -21,7 +21,7 @@ const FormPage = () => {
         lg: '60%',
         xl: '50%'
       }} marginX='auto'
-        pt={32} pb={10}>
+        pt={20} pb={10}>
         <Box bg='white' color='black' p={6} borderRadius='md' >
           <Formik initialValues={{
             name: '',
