@@ -11,7 +11,7 @@ import heroImg from '../../public/bgImage.svg'
 export default function Home() {
   return (
     <main>
-      <CustomHeading className='bg-white pt-14 text-black' primaryHeading='Unleash the Power of Your Purpose: Crowdfund with Crowda!' description='The Blockchain Powered Crowdfunding Platform that Rewards Backers and Fuels Dreams' leftButton='Create a project' rightButton='Support a project' leftBtnBgColor='black' rightBtnTextColor='black' rightBtnClassName='hover:font-semibold'
+      <CustomHeading className='bg-white pt-28 text-black' primaryHeading='Unleash the Power of Your Purpose: Crowdfund with Crowda!' description='The Blockchain Powered Crowdfunding Platform that Rewards Backers and Fuels Dreams' leftButton='Create a project' rightButton='Support a project' leftBtnBgColor='black' rightBtnTextColor='black' rightBtnClassName='hover:font-semibold'
         leftBtnClassName='hover:font-semibold'
       />
 

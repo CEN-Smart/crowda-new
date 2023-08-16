@@ -24,7 +24,7 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header className={classNames(`flex bg-white border-b border-black shadow-primary items-center justify-between md:px-4 lg:px-8`)} >
+    <header className={classNames(`flex bg-white border-b border-black shadow-primary items-center justify-between md:px-4 lg:px-8 fixed w-full z-[1]`)} >
 
       {/* Logo to show on Desktop view */}
       <div className={classNames(`pl-4 py-5 `, {
@@ -53,19 +53,21 @@ export default function Navbar() {
       {/* OverLay */}
       <div onClick={
         () => handleMenu(false)
-      } className={classNames(`absolute z-[2] bg-gray-500/50 inset-0 transform transition duration-300 md:hidden`, {
+      } className={classNames(`absolute z-[2] bg-gray-500/50 inset-0 transform transition min-h-screen duration-300 md:hidden`, {
         'translate-x-0': isMenuOpen,
         '-translate-x-full': !isMenuOpen
       })}></div>
 
 
       {/* Nav Links */}
-      <nav className={classNames(`flex flex-col pt-10 md:pt-0 absolute top-[3.6rem] md:top-0 bottom-0 bg-white  md:bg-transparent z-[3] w-[70%] md:w-fit transform md:translate-x-0 transition duration-300 md:relative md:flex-row md:flex md:space-x-6`, {
+      <nav className={classNames(`flex flex-col pt-10 md:pt-0 absolute top-[3.6rem] md:top-0 bottom-0 min-h-screen md:min-h-fit bg-white  md:bg-transparent z-[3] w-[70%] md:w-fit transform md:translate-x-0 transition duration-300 md:relative md:flex-row md:flex md:space-x-6`, {
         'translate-x-0': isMenuOpen,
         '-translate-x-full': !isMenuOpen
       })}>
         {menuItems.map((item, i) => (
-          <Link onClick={() => handleMenu(false)} href={item.link} key={i} className='nav__link'>
+          <Link onClick={() => handleMenu(false)} href={item.link} key={i} className={classNames(`nav__link`, {
+            'bg-slate-300 font-semibold': pathname === item.link,
+          })}>
             {item.item}
           </Link>
         ))}

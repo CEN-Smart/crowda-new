@@ -126,7 +126,7 @@ const FormPage = () => {
                         <InputLeftElement>
                           <Text >$</Text>
                         </InputLeftElement>
-                        <Field as={Input} name='howMuch' id='howMuch' type='number' variant='outline' validate={(value: string) => {
+                        <Field className={`pl-8`} as={Input} name='howMuch' id='howMuch' type='number' variant='outline' validate={(value: string) => {
                           let error
                           if (!value) {
                             error = 'Please enter an amount'
@@ -151,7 +151,7 @@ const FormPage = () => {
                         <InputLeftElement>
                           <Text >$</Text>
                         </InputLeftElement>
-                        <Field as={Input} name='minimum' id='minimum' type='number' variant='outline' validate={(value: string) => {
+                        <Field className={`pl-8`} as={Input} name='minimum' id='minimum' type='number' variant='outline' validate={(value: string) => {
                           let error
                           if (!value) {
                             error = 'Please specify a minimum Buy-in'
@@ -176,7 +176,7 @@ const FormPage = () => {
                         <InputLeftElement>
                           <Text >$</Text>
                         </InputLeftElement>
-                        <Field as={Input} name='percentage' id='percentage' type='number' variant='outline' validate={(value: string) => {
+                        <Field className={`pl-8`} as={Input} name='percentage' id='percentage' type='number' variant='outline' validate={(value: string) => {
                           let error
                           if (!value) {
                             error = 'Please provide a percentage'
