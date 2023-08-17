@@ -1,0 +1,37 @@
+'use client'
+import { Card, CardFooter, CardHeader, Flex, Stack, Text } from '@chakra-ui/react'
+import Link from 'next/link'
+import { IconType } from 'react-icons'
+
+interface Props {
+  icon: IconType,
+  iconLabel: string,
+  currencyValue: string,
+  footerText?: string,
+  link?: string,
+  bgColor: string,
+}
+
+const DashboardCard = ({ icon: Icon, iconLabel, currencyValue, footerText, link, bgColor }: Props) => {
+  return (
+    <Card bg={bgColor} className='w-[20rem] border border-black shadow-primary' >
+      <Stack>
+        <CardHeader>
+          <Stack spacing={4}>
+            <Flex className='item-center gap-2'>
+              <Icon className='-ml-1' size={24} />
+              <Text className='text-md font-bold '>{iconLabel}</Text>
+            </Flex>
+            <Text className='text-md font-bold'>{currencyValue}</Text>
+          </Stack>
+        </CardHeader>
+        <CardFooter>
+          {footerText && <Text className='text-sm font-bold '>{footerText}</Text>}
+          {link && <Link href='/dashboard/viewall' className='text-sm font-medium  underline hover:no-underline'>{link}</Link>}
+        </CardFooter>
+      </Stack>
+    </Card>
+  )
+}
+
+export default DashboardCard

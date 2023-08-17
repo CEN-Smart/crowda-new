@@ -220,14 +220,14 @@ const FormPage = () => {
         </Box>
       </Grid>
       {/* Modal Popup */}
-      <Modal
+      <Modal size='xs'
         isCentered
         onClose={onClose}
         isOpen={isOpen}
         motionPreset='slideInBottom'
       >
         <ModalOverlay />
-        <ModalContent py={16}>
+        <ModalContent p={8}>
           <Center>
             <Stack spacing={20}>
               <Text textAlign='center' as='strong'>Congratulations! <br />Your project has been listed successfully. </Text>

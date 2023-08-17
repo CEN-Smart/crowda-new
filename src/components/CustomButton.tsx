@@ -35,7 +35,7 @@ export default function CustomButton({ type, title, bgColor, border, textColor, 
         }}
         borderRadius={big ? 'full' : 'md'}
         className={`${className} ${shadow && 'drop-shadow-2xl'} transition duration-200 active:transform active:scale-95 active:shadow-none`}
-        rightIcon={Icon && (<Icon size={20} />)}
+        leftIcon={Icon && (<Icon size={20} />)}
       >
         {title}
       </Button>
