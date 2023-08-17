@@ -1,4 +1,4 @@
-
+'use server'
 import Container from '@/components/Container'
 import CustomButton from '@/components/CustomButton'
 import SecondaryHeading from '@/components/SecondaryHeading'
