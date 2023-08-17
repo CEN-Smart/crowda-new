@@ -8,7 +8,7 @@ import DashboardCard from '@/components/DashboardCard'
 import { HiOutlineCurrencyDollar } from 'react-icons/hi'
 import { TbUsersGroup } from 'react-icons/tb'
 import CardAvatar from '@/components/CardAvatar'
-
+import {Metadata} from 'next'
 export const metadata:Metadate = {
   title: 'Crowda | dashboard',
   description: 'User dashboard'
