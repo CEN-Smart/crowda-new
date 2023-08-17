@@ -1,4 +1,4 @@
-'use server'
+'use client'
 import Container from '@/components/Container'
 import CustomButton from '@/components/CustomButton'
 import SecondaryHeading from '@/components/SecondaryHeading'
@@ -8,15 +8,11 @@ import DashboardCard from '@/components/DashboardCard'
 import { HiOutlineCurrencyDollar } from 'react-icons/hi'
 import { TbUsersGroup } from 'react-icons/tb'
 import CardAvatar from '@/components/CardAvatar'
-import {Metadata} from 'next'
-export const metadata:Metadata = {
-  title: 'Crowda | dashboard',
-  description: 'User dashboard'
-}
+
 
 export default function Dashboard() {
   return (
-    <>
+    <section>
       <Container className='pt-28' >
         <div className='space-y-10' >
           <div className='flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-start lg:justify-between' >
@@ -33,6 +29,6 @@ export default function Dashboard() {
           <CardAvatar />
         </div>
       </Container>
-    </>
+    </section>
   )
 }

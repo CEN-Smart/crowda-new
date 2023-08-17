@@ -13,7 +13,7 @@ const CardAvatar = () => {
         base: 'md',
         lg: 'lg'
       }} mb="2">Published projects (3)</Heading>
-      <Card bgColor='gray.200' className='shadow-primary pb-32'>
+      <Card bgColor='gray.200' className='shadow-primary pb-28'>
         <CardHeader>
           <Flex className=' items-center justify-between gap-4 w-[60%]'>
             <Heading as="h4" size="sm" >Name</Heading>
