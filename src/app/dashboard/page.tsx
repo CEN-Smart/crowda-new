@@ -3,7 +3,6 @@ import Container from '@/components/Container'
 import CustomButton from '@/components/CustomButton'
 import SecondaryHeading from '@/components/SecondaryHeading'
 import { Flex, Stack } from '@chakra-ui/react'
-import { Metadata } from 'next'
 import { FaExchangeAlt } from 'react-icons/fa'
 import { BsCurrencyExchange } from 'react-icons/bs'
 import DashboardCard from '@/components/DashboardCard'
@@ -11,10 +10,7 @@ import { HiOutlineCurrencyDollar } from 'react-icons/hi'
 import { TbUsersGroup } from 'react-icons/tb'
 import CardAvatar from '@/components/CardAvatar'
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Crowda User personal dashboard',
-}
+
 
 export default function Dashboard() {
   return (
