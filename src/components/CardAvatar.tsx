@@ -1,14 +1,50 @@
 'use client'
-import { Avatar, AvatarGroup, ButtonGroup, Card, CardBody, CardHeader, Flex, Heading, Progress, Stack, Text } from '@chakra-ui/react'
+import { Avatar, AvatarGroup, ButtonGroup, Card, CardBody, CardHeader, Flex, Heading, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import moonImg from '../../public/cardImg.svg'
 import Image from 'next/image'
 import CustomButton from './CustomButton'
 import { GiCardExchange } from 'react-icons/gi'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
+import CustomModal from './CustomModal'
+import { Bs0Circle } from 'react-icons/bs'
+import { useRef } from 'react'
 
 const CardAvatar = () => {
+  const { isOpen:IsOpen1, onClose:OnClose1, onOpen:OnOpen1 } = useDisclosure()
+  const { isOpen:IsOpen2, onClose:OnClose2, onOpen:OnOpen2 } = useDisclosure()
+  const cancelRef = useRef()
   return (
     <>
+
+    {/* Custom dialog 1*/}
+    <CustomModal
+    hasTextField
+     motionPreset='slideInBottom'
+     leastDestructiveRef={cancelRef}
+     onClose={OnClose1}
+     isOpen={IsOpen1}
+     isCentered
+      iconClassName='text-blue-600'
+    icon={GiCardExchange} iconLabel='Withdraw funds' address='Wallet address' 
+    addressText='000XA...0Xe'
+    primaryText='Confirm wallet address'
+    placeholder='000Xe...0Xe'
+    addressNumber='0xaB6B4...14E' >
+      <CustomButton title='Withdraw' textColor='white' bgColor='black' shadow  className='hover:bg-gray-900 hover:font-medium' />
+    </CustomModal>
+    {/* Custom dialog 2*/}
+    <CustomModal
+    hasTextField
+     motionPreset='slideInBottom'
+     leastDestructiveRef={cancelRef}
+     onClose={OnClose2}
+     isOpen={IsOpen2}
+     isCentered
+     iconClassName='text-rose-600'
+    icon={IoIosCloseCircleOutline} iconLabel='Cancel project' secondaryText='You will no longer have access to this project after canceling. Funds will be automatically transferred to all backers.' >
+      <CustomButton title='Cancel project' textColor='white' bgColor='red.500' shadow  className='hover:bg-rose-600 hover:font-medium' />
+      <CustomButton  title='Go Back' textColor='black' shadow border  className=' hover:font-medium' />
+    </CustomModal>
       <Heading as="h3" size={{
         base: 'md',
         lg: 'lg'
@@ -43,8 +79,8 @@ const CardAvatar = () => {
 
             </Flex>
             <ButtonGroup spacing={8} className='bg-white px-4 py-2'>
-              <CustomButton icon={GiCardExchange} textColor='black' border title='Withdraw funds' />
-              <CustomButton icon={IoIosCloseCircleOutline} textColor='black' border title='Cancel project' />
+              <CustomButton onClick={OnOpen1} iconClassName='text-blue-600'  icon={GiCardExchange} textColor='black' border title='Withdraw funds' />
+              <CustomButton onClick={OnOpen2} iconClassName='text-rose-600' icon={IoIosCloseCircleOutline} textColor='black' border title='Cancel project' />
             </ButtonGroup>
           </Flex>
 
@@ -69,8 +105,8 @@ const CardAvatar = () => {
 
             </Flex>
             <ButtonGroup spacing={8} className='bg-white px-4 py-2'>
-              <CustomButton icon={GiCardExchange} textColor='black' border title='Withdraw funds' />
-              <CustomButton icon={IoIosCloseCircleOutline} textColor='black' border title='Cancel project' />
+              <CustomButton iconClassName='text-blue-600'   icon={GiCardExchange} textColor='black' border title='Withdraw funds' />
+              <CustomButton iconClassName='text-rose-600'  icon={IoIosCloseCircleOutline} textColor='black' border title='Cancel project' />
             </ButtonGroup>
           </Flex>
         </CardBody>
