@@ -6,7 +6,6 @@ import CustomButton from './CustomButton'
 import { GiCardExchange } from 'react-icons/gi'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import CustomModal from './CustomModal'
-import { Bs0Circle } from 'react-icons/bs'
 import { useRef } from 'react'
 
 const CardAvatar = () => {
@@ -25,7 +24,7 @@ const CardAvatar = () => {
      isOpen={IsOpen1}
      isCentered
       iconClassName='text-blue-600'
-    icon={GiCardExchange} iconLabel='Withdraw funds' address='Wallet address' 
+    icon={GiCardExchange} iconLabel='Withdraw funds' address='Wallet address:' 
     addressText='000XA...0Xe'
     primaryText='Confirm wallet address'
     placeholder='000Xe...0Xe'
@@ -43,7 +42,7 @@ const CardAvatar = () => {
      iconClassName='text-rose-600'
     icon={IoIosCloseCircleOutline} iconLabel='Cancel project' secondaryText='You will no longer have access to this project after canceling. Funds will be automatically transferred to all backers.' >
       <CustomButton title='Cancel project' textColor='white' bgColor='red.500' shadow  className='hover:bg-rose-600 hover:font-medium' />
-      <CustomButton  title='Go Back' textColor='black' shadow border  className=' hover:font-medium' />
+      <CustomButton onClick={OnClose2}  title='Go Back' textColor='black' shadow border  className=' hover:font-medium' />
     </CustomModal>
       <Heading as="h3" size={{
         base: 'md',

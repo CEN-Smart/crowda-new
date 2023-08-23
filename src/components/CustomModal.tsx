@@ -76,7 +76,7 @@ export default function CustomModal({
               </Flex>
             <Text as='p' className="text-sm font-normal text-slate-500">{secondaryText}</Text>
               <Text className="text-sm">
-                <span className=" text-gray-500">{address}: 
+                <span className=" text-gray-500">{address}{" "}
                 </span>
                 <strong>{addressNumber}</strong>
               </Text>
@@ -101,7 +101,7 @@ export default function CustomModal({
             {hasTextField && 
             <Stack>
               <Text className='text-sm font-medium'>
-                {primaryText}:
+                {primaryText}
               </Text>
               <span className=" text-gray-500 text-sm">{addressText}</span>
               </Stack>}

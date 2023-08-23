@@ -29,7 +29,7 @@ export default function Dashboard() {
      onClose={OnClose1}
      isOpen={IsOpen1}
      isCentered
-    icon={GrLink} iconLabel='Change Address' address='Current address' 
+    icon={GrLink} iconLabel='Change Address' address='Current address:' 
     addressText='000XA...0Xe'
     primaryText='New address'
     placeholder='000Xe...0Xe'
@@ -45,7 +45,7 @@ export default function Dashboard() {
      onClose={OnClose2}
      isOpen={IsOpen2}
      isCentered
-    icon={ GiCardExchange} iconLabel='Withdraw funds' address='Wallet address' 
+    icon={ GiCardExchange} iconLabel='Withdraw funds' address='Wallet address:' 
     addressText='000XA...0Xe'
     primaryText='Confirm wallet address'
     placeholder='000Xe...0Xe'
