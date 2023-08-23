@@ -6,6 +6,7 @@ import { useCallback, useState } from 'react';
 import classNames from 'classnames';
 import Logo from './Logo'
 import { usePathname } from 'next/navigation'
+import { useWeb3Modal } from '@web3modal/react';
 
 interface MenuItems {
   [key: string]: string
@@ -19,6 +20,7 @@ const menuItems: MenuItems[] = [
 export default function Navbar() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const { open, close } = useWeb3Modal()
   const handleMenu = useCallback((action: boolean) => {
     setIsMenuOpen(action);
   }, [])
@@ -72,7 +74,9 @@ export default function Navbar() {
           </Link>
         ))}
         <div className='px-4'>
-          <button className='px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400'>Connect Wallet</button>
+          <button className='px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400' onClick={async () => {
+            await open()
+          }}>Connect Wallet</button>
         </div>
       </nav>
 
