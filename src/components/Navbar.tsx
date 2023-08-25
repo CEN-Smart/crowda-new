@@ -46,7 +46,7 @@ export default function Navbar() {
     } else {
       setButtonText("Wallet Connect")
     }
-    }, [isConnected, address])
+    },[isConnected, address])
 
 
   return (
