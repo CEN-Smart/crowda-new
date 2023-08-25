@@ -6,11 +6,14 @@ import Image from 'next/image'
 import CustomButton from '../CustomButton';
 import imgPlaceholder from '../../../public/fileplaceholder.png'
 import { LuChevronDown } from 'react-icons/lu';
-
+import { prepareWriteContract, getAccount } from '@wagmi/core'
 
 
 const FormPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+
+
   return (
     <>
       <Grid minH='auto' px={{
