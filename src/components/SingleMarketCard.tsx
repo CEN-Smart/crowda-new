@@ -18,7 +18,7 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { LuChevronDown } from "react-icons/lu";
 import CustomButton from "./CustomButton";
@@ -60,7 +60,7 @@ export default function SingleMarketCard() {
                   <Progress
                     className="mb-2 font-semibold rounded-full"
                     value={60}
-                    size="lg"
+                    size="md"
                     colorScheme="green"
                   />
 
@@ -74,72 +74,102 @@ export default function SingleMarketCard() {
                 <Heading size="md" mt={6}>
                   Current backers(3)
                 </Heading>
-                <Text>
+                <Text className="text-sm ">
                   0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
                   <span className="block font-bold">$500</span>
                 </Text>
-                <Text>
+                <Text className="text-sm ">
                   0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
                   <span className="block font-bold">$500</span>
                 </Text>
-                <Text>
+                <Text className="text-sm ">
                   0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
-                  <span className="block pb-8 font-bold border-b border-slate-600">$500</span>
+                  <span className="block pb-8 font-bold border-b border-slate-600">
+                    $500
+                  </span>
                 </Text>
               </Stack>
             </CardBody>
             <CardFooter className="flex flex-col items-start justify-between -mt-8 lg:flex-row ">
               <Stack>
-              <Heading size="md" mt={6}>
+                <Heading size="md" mt={6}>
                   Enter how much you&apos;re pledging
                 </Heading>
-                <Formik initialValues={{
-            howMuch: '',
-          }}
-            onSubmit={(values) => (
-              alert(JSON.stringify(values, null, 2))
-            )}>
-            {({ handleSubmit, errors, touched, isSubmitting }) => (
-              <Form onSubmit={handleSubmit}>
-                <FormControl isInvalid={!!errors.howMuch && touched.howMuch}>
-                    <FormLabel htmlFor='howMuch'>Minimum buy-in for this project is $500. <Link className='underline transition duration-300 hover:no-underline' href='/marketplace/marketId/learnmore'>Learn More</Link>
-                  </FormLabel>
-                    <Box border='1px solid gray' borderRadius='md' >
-                      <InputGroup>
-                        <InputLeftElement>
-                          <Text >$</Text>
-                        </InputLeftElement>
-                        <Field className={`pl-8 pr-20`} as={Input} name='howMuch' id='howMuch' placeholder='500' type='number' variant='outline' validate={(value: string) => {
-                          let error
-                          if (!value) {
-                            error = 'Please enter an amount'
-                          }
-                          return error
-                        }} />
-                        <InputRightElement>
-                          <span className='mr-4 -ml-10'> USD </span>
-                          <LuChevronDown color='green.500' />
-                        </InputRightElement>
-                      </InputGroup>
-                    </Box>
+                <Formik
+                  initialValues={{
+                    howMuch: "",
+                  }}
+                  onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+                >
+                  {({ handleSubmit, errors, touched, isSubmitting }) => (
+                    <Form onSubmit={handleSubmit}>
+                      <FormControl
+                        isInvalid={!!errors.howMuch && touched.howMuch}
+                      >
+                        <FormLabel htmlFor="howMuch">
+                          Minimum buy-in for this project is $500.{" "}
+                          <Link
+                            className="underline transition duration-300 hover:no-underline"
+                            href="/marketplace/marketId/learnmore"
+                          >
+                            Learn More
+                          </Link>
+                        </FormLabel>
+                        <Box border="1px solid gray" borderRadius="md">
+                          <InputGroup>
+                            <InputLeftElement>
+                              <Text>$</Text>
+                            </InputLeftElement>
+                            <Field
+                              className={`pl-8 pr-20`}
+                              as={Input}
+                              name="howMuch"
+                              id="howMuch"
+                              placeholder="500"
+                              type="number"
+                              variant="outline"
+                              validate={(value: string) => {
+                                let error;
+                                if (!value) {
+                                  error = "Please enter an amount";
+                                }
+                                return error;
+                              }}
+                            />
+                            <InputRightElement>
+                              <span className="mr-4 -ml-10"> USD </span>
+                              <LuChevronDown color="green.500" />
+                            </InputRightElement>
+                          </InputGroup>
+                        </Box>
 
-                    <FormErrorMessage>
-                      {errors.howMuch}
-                    </FormErrorMessage>
-                  </FormControl >
-                  <CustomButton type='submit' className='mt-6 w-fit hover:font-semibold' title='Buy-in' bgColor='black' textColor='white' />
-              </Form>
-
-            )}
-          </Formik>
-          
+                        <FormErrorMessage>{errors.howMuch}</FormErrorMessage>
+                      </FormControl>
+                      <CustomButton
+                        type="submit"
+                        className="mt-6 w-fit hover:font-semibold"
+                        title="Buy-in"
+                        bgColor="black"
+                        textColor="white"
+                      />
+                    </Form>
+                  )}
+                </Formik>
               </Stack>
               <Stack>
-              <Heading size="md" mt={6}>
+                <Heading size="md" mt={6}>
                   Contact address
                 </Heading>
-                <Text className="break-all "> 0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E<Link className='underline transition block font-[500] hover:no-underline duration-300' href='/marketplace/marketId/view-on-etherscan'>View on etherscan</Link>
-                  </Text>
+                <Text className="text-sm break-all ">
+                  {" "}
+                  0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E
+                  <Link
+                    className="underline transition block font-[500] hover:no-underline duration-300"
+                    href="/marketplace/marketId/view-on-etherscan"
+                  >
+                    View on etherscan
+                  </Link>
+                </Text>
               </Stack>
             </CardFooter>
           </Card>
