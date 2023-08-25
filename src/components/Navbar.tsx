@@ -2,12 +2,16 @@
 import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
-import { useCallback, useState } from "react";
+import { useCallback, useState ,useEffect} from "react";
 import classNames from "classnames";
 import Logo from "./Logo";
 import { usePathname } from "next/navigation";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { useWeb3Modal } from '@web3modal/react'
+import { getAccount } from '@wagmi/core'
+
+
 
 interface MenuItems {
   [key: string]: string;
@@ -30,6 +34,20 @@ export default function Navbar() {
   const handleMenu = useCallback((action: boolean) => {
     setIsMenuOpen(action);
   }, []);
+  const [buttonText, setButtonText] = useState('Wallet Connect');
+  const { open } = useWeb3Modal();
+  const { isConnected, address } = getAccount();
+
+  useEffect(()=>{
+    if (isConnected) {
+      //@ts-ignore
+      const sliceAddr = `${address.slice(0,5)}...${address.slice(-4)}`
+      setButtonText(sliceAddr)
+    } else {
+      setButtonText("Wallet Connect")
+    }
+    }, [isConnected, address])
+
 
   return (
     <header
@@ -132,8 +150,11 @@ export default function Navbar() {
           )}
         </Menu>
         <div className="px-4">
-          <button className="px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400">
-            Connect Wallet
+          <button className="px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400"
+          
+            onClick={async () => { await open() }}
+          >
+            {buttonText}
           </button>
         </div>
       </nav>
