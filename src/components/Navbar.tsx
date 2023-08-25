@@ -37,7 +37,7 @@ export default function Navbar() {
         `flex bg-white border-b border-black shadow-primary items-center justify-between md:px-4 lg:px-8 fixed w-full z-[1]`
       )}
     >
-      {/* ? Logo to show on Desktop view */}
+      {/* Logo to show on Desktop view */}
       <div className={classNames(`pl-4 py-5 `, {})}>
         <Logo />
       </div>
@@ -121,7 +121,9 @@ export default function Navbar() {
               </div>
               <MenuList>
                 {dashboardItems.map((item, _) => (
-                  <MenuItem key={item.item}>
+                  <MenuItem className={classNames(``,{
+                    "bg-slate-300 font-semibold": pathname === item.link,
+                  })} key={item.item}>
                     <Link onClick={() => handleMenu(false)} href={item.link}>
                       {item.item}
                     </Link>

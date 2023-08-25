@@ -1,5 +1,4 @@
-import type { Config } from 'tailwindcss'
-import tailwindcssPlugins from 'tailwindcss/plugin'
+import type { Config } from 'tailwindcss';
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,15 +7,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      boxShadow:{
-        primary: '0 15px 35px rgba(0 0 0/.15)'
-      }
-     
+      boxShadow: {
+        primary: '0 15px 35px rgba(0 0 0/.15)',
+      },
     },
   },
+  tailwinFunctions: ['classNames'],
   plugins: [],
   corePlugins: {
     preflight: false,
-  }
-}
-export default config
+  },
+};
+export default config;
