@@ -12,13 +12,29 @@ import CustomModal from '@/components/CustomModal'
 import { useDisclosure } from '@chakra-ui/react'
 import { useRef } from 'react'
 import {GrLink} from 'react-icons/gr'
-import {GiCardExchange} from 'react-icons/gi'
+import { GiCardExchange } from 'react-icons/gi'
+import { getAccount, readContract } from '@wagmi/core'
+import { factoryAbi } from '@/constants'
 
 
 export default function Dashboard() {
+
   const { isOpen:IsOpen1, onClose:OnClose1, onOpen:OnOpen1 } = useDisclosure()
   const { isOpen:IsOpen2, onClose:OnClose2, onOpen:OnOpen2 } = useDisclosure()
   const cancelRef = useRef()
+  const { isConnected, address } = getAccount();
+  
+  async function isCreator() {
+    const  request  = await readContract({
+      address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
+      abi: factoryAbi,
+      functionName: 'isCreator',
+      args : [address]
+    })
+  }
+
+
+
   return (
     <section>
        {/* Custom dialog 1*/}

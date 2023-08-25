@@ -6,13 +6,160 @@ import Image from 'next/image'
 import CustomButton from '../CustomButton';
 import imgPlaceholder from '../../../public/fileplaceholder.png'
 import { LuChevronDown } from 'react-icons/lu';
+import { prepareWriteContract, writeContract, getAccount, waitForTransaction } from '@wagmi/core'
+import { factoryAbi } from "../../constants/index"
+import { parseEther } from 'viem'
+import { Dialog, Transition } from "@headlessui/react";
+import { useState, Fragment } from "react";
+import { useWeb3Modal } from "@web3modal/react";
+
+
+
 
 
 
 const FormPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { address, isConnected } = getAccount();
+  const { open, close } = useWeb3Modal();
+
+  const priceFeed = "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e"
+
+  let [isOpened, setIsOpened] = useState(false);
+  let [completed, setCompleted] = useState(false)
+
+  // modal to ask users to connect
+  function closeModal() {
+    setIsOpened(false);
+  }
+  // modal to ask users to connect
+  function openModal() {
+    setIsOpened(true);
+  }
+  const abi = [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amountNeeded",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_priceFeed",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_percentage",
+          "type": "uint8"
+        }
+      ],
+      "name": "CreateCrowdSource",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ]
+  //@ts-ignore
+  async function createProject(amount,minAmount,percentage,stake) {
+    const request  = await prepareWriteContract({
+      address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
+      abi: factoryAbi,
+      functionName: 'CreateCrowdSource',
+      value: parseEther(stake),
+      args : [amount,minAmount,priceFeed,address,percentage]
+    })
+    console.log('value is ',amount,minAmount)
+    const { hash } = await writeContract(request)
+    const data = await waitForTransaction({
+      confirmations: 1,
+      hash,
+    })
+    console.log(hash);
+    if (data.status == 'success') {
+      // CALL JIMMY'S API HERE
+      console.log(data);
+      setCompleted(true);
+      return true
+    } 
+  }
+
   return (
     <>
+      
+      {/**------------------------------------------------------> WEB MODAL<------------------------------------------------------ */}
+      <Transition appear show={isOpened} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={closeModal}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-medium leading-6 text-gray-900"
+                    >
+                      Connect Wallet
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Opps!! did you forget to connect your wallet?. please
+                        connect your wallet to continue with Transaction
+                      </p>
+                    </div>
+
+                    <div className="mt-4">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={async () => {
+                          await open();
+                          isConnected&& closeModal;
+                        }}
+                      >
+                        connect wallet
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
+      
+
+      {/** <---------------------------------------End Modal Pop Up -----------------------------------------------------------> */}
+
       <Grid minH='auto' px={{
         base: 1,
         md: 4,
@@ -32,13 +179,19 @@ const FormPage = () => {
             howMuch: '',
             minimum: '',
             percentage: '',
-            upload: ''
+            upload: '',
+            stake: ''
           }}
-            onSubmit={(values) => (
-              alert(JSON.stringify(values, null, 2))
-            )}>
-            {({ handleSubmit, errors, touched, isSubmitting }) => (
-              <Form onSubmit={handleSubmit}>
+            onSubmit={ async(values) => (
+               await createProject(values.howMuch,values.minimum, values.percentage, values.stake)
+          )}>
+            {({ handleSubmit, values, errors, touched, isSubmitting }) => (
+              <Form onSubmit={async () => {
+                //isConnected ?
+                  handleSubmit
+                   //: openModal();
+                    
+              }}>
                 <Stack spacing={4}>
                   <FormControl isInvalid={!!errors.name && touched.name}>
                     <FormLabel htmlFor='name'>Your nickname</FormLabel>
@@ -171,11 +324,11 @@ const FormPage = () => {
                   </FormControl >
                   {/* Percentage */}
                   <FormControl isInvalid={!!errors.name && touched.name}>
-                    <FormLabel htmlFor='percentage'>How much would you like to raise?</FormLabel>
+                    <FormLabel htmlFor='percentage'>ROI to take on project?</FormLabel>
                     <Box border='1px solid gray' borderRadius='md' >
                       <InputGroup>
                         <InputLeftElement>
-                          <Text >$</Text>
+                          <Text >%</Text>
                         </InputLeftElement>
                         <Field className={`pl-8`} as={Input} name='percentage' id='percentage' type='number' variant='outline' validate={(value: string) => {
                           let error
@@ -193,6 +346,34 @@ const FormPage = () => {
                       {errors.percentage}
                     </FormErrorMessage>
                   </FormControl >
+
+
+                        {/* Stake Amount */}
+                  <FormControl isInvalid={!!errors.name && touched.name}>
+                    <FormLabel htmlFor='percentage'>Amount to stake?</FormLabel>
+                    <Box border='1px solid gray' borderRadius='md' >
+                      <InputGroup>
+                        <InputLeftElement>
+                          <Text >$</Text>
+                        </InputLeftElement>
+                        <Field className={`pl-8`} as={Input} name='stake' id='stake' type='number' variant='outline' validate={(value: string) => {
+                          let error
+                          if (!value) {
+                            error = 'Please provide a stake'
+                          }
+                          return error
+                        }} />
+                        <InputRightElement>
+                          <LuChevronDown color='green.500' />
+                        </InputRightElement>
+                      </InputGroup>
+                    </Box>
+                    <FormErrorMessage>
+                      {errors.stake}
+                    </FormErrorMessage>
+                  </FormControl >
+
+
                   {/* Upload Content */}
                   <Center textAlign='center'>
                     <Stack>
@@ -210,8 +391,10 @@ const FormPage = () => {
                     </Stack>
                   </Center>
                   {/* Next Button */}
-                  <CustomButton onClick={() => {
-                    isSubmitting ? null : onOpen()
+                  <CustomButton onClick={async () => {
+                    isSubmitting ?
+                      null :
+                    completed && onOpen()
                   }} type='submit' title='Submit' bgColor='black' textColor='white' className='hover:font-semibold hover:bg-slate-900' />
                 </Stack>
               </Form>
