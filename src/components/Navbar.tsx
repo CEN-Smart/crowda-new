@@ -1,11 +1,13 @@
-'use client'
-import Link from 'next/link';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { AiOutlineClose } from 'react-icons/ai';
-import { useCallback, useState } from 'react';
-import classNames from 'classnames';
-import Logo from './Logo'
-import { usePathname } from 'next/navigation'
+"use client";
+import Link from "next/link";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlineClose } from "react-icons/ai";
+import { useCallback, useState } from "react";
+import classNames from "classnames";
+import Logo from "./Logo";
+import { usePathname } from "next/navigation";
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 
 interface MenuItems {
   [key: string]: string;
@@ -25,7 +27,6 @@ const dashboardItems: MenuItems[] = [
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const { open, close } = useWeb3Modal()
   const handleMenu = useCallback((action: boolean) => {
     setIsMenuOpen(action);
   }, []);
@@ -99,8 +100,41 @@ export default function Navbar() {
             {item.item}
           </Link>
         ))}
-        <div className='px-4'>
-          <button className='px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400'>Connect Wallet</button>
+
+        {/* DropDown Menu */}
+        <Menu>
+          {({ isOpen }) => (
+            <>
+              <div className="px-4 md:px-0">
+                <MenuButton
+                  className="mt-4 font-normal"
+                  bg="transparent"
+                  _active={{ bg: "transparent" }}
+                  _focus={{ bg: "transparent" }}
+                  _hover={{ bg: "transparent" }}
+                  isActive={isOpen}
+                  as={Button}
+                  rightIcon={isOpen ? <BiChevronUp /> : <BiChevronDown />}
+                >
+                  Dashboard
+                </MenuButton>
+              </div>
+              <MenuList>
+                {dashboardItems.map((item, _) => (
+                  <MenuItem key={item.item}>
+                    <Link onClick={() => handleMenu(false)} href={item.link}>
+                      {item.item}
+                    </Link>
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </>
+          )}
+        </Menu>
+        <div className="px-4">
+          <button className="px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400">
+            Connect Wallet
+          </button>
         </div>
       </nav>
 
