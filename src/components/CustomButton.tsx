@@ -15,15 +15,16 @@ interface ButtonProps {
   shadow?: boolean
   colorScheme?: string
   iconClassName?: string
+  rightIcon?: IconType
 }
 
-export default function CustomButton({ type, title, bgColor, border, textColor, big, icon: Icon, onClick, shadow, className, colorScheme, iconClassName }: ButtonProps) {
+export default function CustomButton({ type, title, bgColor, border, textColor, big, icon: Icon, rightIcon:IconR, onClick, shadow, className, colorScheme = '', iconClassName }: ButtonProps) {
   return (
     <>
       <Button type={type} onClick={onClick} fontWeight='normal'
         border={border ? `1px solid ${textColor}` : 'none'}
         color={textColor}
-        colorScheme={colorScheme ? colorScheme : ''}
+        colorScheme={colorScheme}
         bg={bgColor}
         size={big ? 'lg' : 'md'}
         px={{
@@ -36,6 +37,7 @@ export default function CustomButton({ type, title, bgColor, border, textColor, 
         }}
         borderRadius={big ? 'full' : 'md'}
         className={`${className} ${shadow && 'drop-shadow-2xl'} transition duration-200 active:transform active:scale-95 active:shadow-none`}
+        rightIcon={IconR && (<IconR size={20} />)}
         leftIcon={Icon && (<Icon size={20} className={iconClassName} />)}
       >
         {title}
