@@ -26,7 +26,7 @@ import CustomButton from "./CustomButton";
 export default function SingleMarketCard() {
   return (
     <>
-      <Box className="pt-32 lg:px-12 md:px-8 px-4 mx-auto">
+      <Box className="px-4 pt-32 mx-auto lg:px-12 md:px-8">
         <Box>
           <Heading as="h3" mb={2}>
             The Moon project
@@ -84,11 +84,11 @@ export default function SingleMarketCard() {
                 </Text>
                 <Text>
                   0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
-                  <span className="block font-bold border-b border-slate-600 pb-8">$500</span>
+                  <span className="block pb-8 font-bold border-b border-slate-600">$500</span>
                 </Text>
               </Stack>
             </CardBody>
-            <CardFooter className="flex flex-col  lg:flex-row items-start justify-between -mt-8 ">
+            <CardFooter className="flex flex-col items-start justify-between -mt-8 lg:flex-row ">
               <Stack>
               <Heading size="md" mt={6}>
                   Enter how much you&apos;re pledging
@@ -102,7 +102,7 @@ export default function SingleMarketCard() {
             {({ handleSubmit, errors, touched, isSubmitting }) => (
               <Form onSubmit={handleSubmit}>
                 <FormControl isInvalid={!!errors.howMuch && touched.howMuch}>
-                    <FormLabel htmlFor='howMuch'>Minimum buy-in for this project is $500. <Link className='underline transition hover:no-underline duration-300' href='/marketplace/marketId/learnmore'>Learn More</Link>
+                    <FormLabel htmlFor='howMuch'>Minimum buy-in for this project is $500. <Link className='underline transition duration-300 hover:no-underline' href='/marketplace/marketId/learnmore'>Learn More</Link>
                   </FormLabel>
                     <Box border='1px solid gray' borderRadius='md' >
                       <InputGroup>
@@ -117,7 +117,7 @@ export default function SingleMarketCard() {
                           return error
                         }} />
                         <InputRightElement>
-                          <span className='-ml-10 mr-4'> USD </span>
+                          <span className='mr-4 -ml-10'> USD </span>
                           <LuChevronDown color='green.500' />
                         </InputRightElement>
                       </InputGroup>
@@ -127,7 +127,7 @@ export default function SingleMarketCard() {
                       {errors.howMuch}
                     </FormErrorMessage>
                   </FormControl >
-                  <CustomButton type='submit' className='w-fit hover:font-semibold mt-6' title='Buy-in' bgColor='black' textColor='white' />
+                  <CustomButton type='submit' className='mt-6 w-fit hover:font-semibold' title='Buy-in' bgColor='black' textColor='white' />
               </Form>
 
             )}
@@ -138,7 +138,7 @@ export default function SingleMarketCard() {
               <Heading size="md" mt={6}>
                   Contact address
                 </Heading>
-                <Text> 0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E<Link className='underline transition block font-[500] hover:no-underline duration-300' href='/marketplace/marketId/view-on-etherscan'>View on etherscan</Link>
+                <Text className="break-all "> 0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E<Link className='underline transition block font-[500] hover:no-underline duration-300' href='/marketplace/marketId/view-on-etherscan'>View on etherscan</Link>
                   </Text>
               </Stack>
             </CardFooter>

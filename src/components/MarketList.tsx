@@ -1,31 +1,47 @@
 "use client";
-import { Text, SimpleGrid } from "@chakra-ui/react";
+import { Text, SimpleGrid, GridItem, Box, Grid, Heading } from "@chakra-ui/react";
 import Container from "./Container";
-import SecondaryHeading from "./SecondaryHeading";
 import MarketCard from "./MarketCard";
 
 export default function MarketList() {
   return (
     <>
       <Container className="pt-28">
-        <SecondaryHeading
-          center
-          heading={`The Malaika's Marketplace`}
-          title="Explore and support projects that you care about."
-        />
-        <Text className="text-lg font-semibold py-3 pt-20">Trending projects</Text>
-        <SimpleGrid
-          className="p-6 shadow-primary border border-slate-300 rounded-lg"
-          minChildWidth="350px"
-          spacing={5}
-        >
-          <MarketCard />
-          <MarketCard />
-          <MarketCard />
-          <MarketCard />
-          <MarketCard />
-          <MarketCard />
-        </SimpleGrid>
+        <Heading size={{
+          base: "sm",
+          md: "md",
+          lg: "lg",
+        }} className="font-bold text-center">
+          The Malaika&apos;s Marketplace
+        </Heading>
+        <Text className="py-3 text-sm text-center md:text-md" >Explore and support projects that you care about.</Text>
+        <Text className="py-3 pt-20 text-lg font-semibold">Trending projects</Text>
+       <Box  className="p-2 mx-auto border rounded-lg md:p-6 shadow-primary border-slate-300">
+      <Grid gridTemplateColumns={{
+        base: "repeat(1, 1fr)",
+        md: "repeat(2, 1fr)",
+        lg: "repeat(3, 1fr)",
+      }} gap={5} >
+        <GridItem>
+          <MarketCard/>
+        </GridItem>
+        <GridItem>
+          <MarketCard/>
+        </GridItem>
+        <GridItem>
+          <MarketCard/>
+        </GridItem>
+        <GridItem>
+          <MarketCard/>
+        </GridItem>
+        <GridItem>
+          <MarketCard/>
+        </GridItem>
+        <GridItem>
+          <MarketCard/>
+        </GridItem>
+      </Grid>
+       </Box>
       </Container>
     </>
   );

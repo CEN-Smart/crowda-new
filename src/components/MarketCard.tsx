@@ -19,7 +19,14 @@ export default function MarketCard() {
   return (
     <>
       <Card className="relative rounded-2xl">
+    
         <CardBody>
+        <Image
+            src="https://images.unsplash.com/photo-1506443432602-ac2fcd6f54e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fHRoZSUyMG1vb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=80"
+            alt="Green double couch with wooden legs"
+            borderRadius="lg"
+            w='100%'
+          />
           <Badge
             bg="gray.400"
             className="absolute p-1 text-xs font-normal rounded-md top-8 left-8"
@@ -27,11 +34,7 @@ export default function MarketCard() {
           >
             0.24 ETH
           </Badge>
-          <Image
-            src="https://images.unsplash.com/photo-1506443432602-ac2fcd6f54e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fHRoZSUyMG1vb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=80"
-            alt="Green double couch with wooden legs"
-            borderRadius="lg"
-          />
+        
           <Stack mt="6" spacing="3">
             <Heading size="md">#The Moon</Heading>
             <Text>A brief description of this project.</Text>
