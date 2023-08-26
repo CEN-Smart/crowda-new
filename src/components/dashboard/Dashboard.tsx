@@ -15,6 +15,9 @@ import {GrLink} from 'react-icons/gr'
 import { GiCardExchange } from 'react-icons/gi'
 import { getAccount, readContract } from '@wagmi/core'
 import { factoryAbi, malaikaAbi } from '@/constants'
+import { prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core'
+
+
 
 
 export default function Dashboard() {
@@ -25,9 +28,57 @@ export default function Dashboard() {
   
   const { isConnected, address } = getAccount();
   const [AmountRemaining, setAmountRemaining] = useState("loading.....")
-  const[Providers, setProviders] = useState("loading.......")
+  const [Providers, setProviders] = useState("loading.......")
+  
+  const localhostAddr = "0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F"
+  //@ts-ignore
+  //const sliceAddr = `${address.slice(0, 5)}...${address.slice(-4)}`;
 
 
+
+  async function changeOwner(newOwner:string) {
+    if (isConnected) {
+      const request = await prepareWriteContract({
+        address: localhostAddr,
+        abi: malaikaAbi,
+        functionName: 'changeOwner',
+        args: [newOwner]
+      })
+      console.log('value is ', request)
+      const { hash } = await writeContract(request)
+      const data = await waitForTransaction({
+        confirmations: 1,
+        hash,
+      })
+      console.log(hash);
+      if (data.status == 'success') {
+        console.log(data);
+        return true
+      }
+    } 
+  }
+
+  async function changeShareAmount(newAmount:string) {
+    if (isConnected) {
+      const request = await prepareWriteContract({
+        address: localhostAddr,
+        abi: malaikaAbi,
+        functionName: 'changeShareAmount',
+        args: [newAmount]
+      })
+      console.log('value is ', request)
+      const { hash } = await writeContract(request)
+      const data = await waitForTransaction({
+        confirmations: 1,
+        hash,
+      })
+      console.log(hash);
+      if (data.status == 'success') {
+        console.log(data);
+        return true
+      }
+    } 
+  }
 
   async function getAmount(contractAddress:string) {
     const  request  = await readContract({
@@ -130,8 +181,10 @@ export default function Dashboard() {
     addressText='000XA...0Xe'
     primaryText='New address'
     placeholder='000Xe...0Xe'
-    addressNumber='0xaB6B4...14E' >
-      <CustomButton title='Change' textColor='white' bgColor='black' shadow  className='hover:bg-gray-900 hover:font-medium' />
+    addressNumber={address} >
+        <CustomButton title='Change' textColor='white' bgColor='black' shadow className='hover:bg-gray-900 hover:font-medium' onClick={async () => {
+          await changeOwner("placeholder")
+        }} />
     </CustomModal>
     {/* Custom dialog 2*/}
     <CustomModal
@@ -143,11 +196,13 @@ export default function Dashboard() {
      isOpen={IsOpen2}
      isCentered
     icon={ GiCardExchange} iconLabel='Withdraw funds' address='Wallet address:' 
-    addressText='000XA...0Xe'
+    addressText={address}
     primaryText='Confirm wallet address'
-    placeholder='000Xe...0Xe'
-    addressNumber='0xaB6B4...14E' >
-      <CustomButton title='Withdraw' textColor='white' bgColor='black' shadow  className='hover:bg-gray-900 hover:font-medium' />
+    placeholder="0x67h4...05c"
+    addressNumber="0xe798...9c7" > 
+        <CustomButton title='Withdraw' textColor='white' bgColor='black' shadow className='hover:bg-gray-900 hover:font-medium' onClick={async () => {
+          await changeShareAmount("placeholder")
+        }} />
     </CustomModal>
       <Container className='pt-28' >
         <div className='space-y-10' >
@@ -155,7 +210,7 @@ export default function Dashboard() {
             <SecondaryHeading heading='Hello Poppins,' title='You can manage your listed projects and do much more here.' />
             <div className='flex flex-col md:flex-row gap-8'>
               <CustomButton onClick={OnOpen1} title='Change Ownership' textColor='black' border icon={FaExchangeAlt} />
-              <CustomButton onClick={OnOpen2} title='Change Buy-in' textColor='black' border icon={BsCurrencyExchange} />
+              <CustomButton onClick={OnOpen2} title='Change Buy-in' textColor='black' border icon={BsCurrencyExchange}  />
             </div>
           </div>
           <div className='flex flex-col md:flex-row gap-8'>
