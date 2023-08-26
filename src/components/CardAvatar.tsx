@@ -101,7 +101,7 @@ const CardAvatar = () => {
       </Heading>
       <Card bgColor='gray.200' className='shadow-primary pb-28'>
         <CardHeader>
-          <Flex className=' items-center justify-between w-[58%]'>
+          <Flex className=' items-center gap-2 justify-between w-[58%]'>
             <Heading as='h4' size='sm'>
               Name
             </Heading>

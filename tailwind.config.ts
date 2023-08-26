@@ -7,6 +7,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      listStyleType: {
+        square: 'square',
+        alphaLower: 'lower-alpha',
+        alphaUpper: 'upper-alpha',
+      },
       boxShadow: {
         primary: '0 15px 35px rgba(0 0 0/.15)',
       },
