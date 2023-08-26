@@ -1,31 +1,29 @@
-"use client";
-import Link from "next/link";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiOutlineClose } from "react-icons/ai";
-import { useCallback, useState ,useEffect} from "react";
-import classNames from "classnames";
-import Logo from "./Logo";
-import { usePathname } from "next/navigation";
-import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { BiChevronDown, BiChevronUp } from "react-icons/bi";
-import { useWeb3Modal } from '@web3modal/react'
-import { getAccount } from '@wagmi/core'
-
-
+'use client';
+import Link from 'next/link';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { AiOutlineClose } from 'react-icons/ai';
+import { useCallback, useState, useEffect } from 'react';
+import classNames from 'classnames';
+import Logo from './Logo';
+import { usePathname } from 'next/navigation';
+import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import { useWeb3Modal } from '@web3modal/react';
+import { getAccount } from '@wagmi/core';
 
 interface MenuItems {
   [key: string]: string;
 }
 
 const menuItems: MenuItems[] = [
-  { item: "About", link: "/about" },
-  { item: "Projects", link: "/projects" },
-  { item: "Market", link: "/marketplace" },
+  { item: 'About', link: '/about' },
+  { item: 'Projects', link: '/createproject' },
+  { item: 'Market', link: '/marketplace' },
 ];
 
 const dashboardItems: MenuItems[] = [
-  { item: "Creator Dashboard", link: "/creator-dashboard" },
-  { item: "Backer Dashboard", link: "/user-dashboard" },
+  { item: 'Creator Dashboard', link: '/creator-dashboard' },
+  { item: 'Backer Dashboard', link: '/user-dashboard' },
 ];
 
 export default function Navbar() {
@@ -38,16 +36,15 @@ export default function Navbar() {
   const { open } = useWeb3Modal();
   const { isConnected, address } = getAccount();
 
-  useEffect(()=>{
+  useEffect(() => {
     if (isConnected) {
       //@ts-ignore
-      const sliceAddr = `${address.slice(0,5)}...${address.slice(-4)}`
-      setButtonText(sliceAddr)
+      const sliceAddr = `${address.slice(0, 5)}...${address.slice(-4)}`;
+      setButtonText(sliceAddr);
     } else {
-      setButtonText("Wallet Connect")
+      setButtonText('Wallet Connect');
     }
-    },[isConnected, address])
-
+  }, [isConnected, address]);
 
   return (
     <header
@@ -66,8 +63,8 @@ export default function Navbar() {
           `
       absolute z-[4] pt-[1.3rem] md:pt-0 drop-shadow-2xl bg-white shadow-primary border-b border-black flex items-center justify-between md:hidden w-[70%] transform transition duration-300`,
           {
-            "-translate-x-full": !isMenuOpen,
-            "translate-x-0": isMenuOpen,
+            '-translate-x-full': !isMenuOpen,
+            'translate-x-0': isMenuOpen,
           }
         )}
       >
@@ -79,8 +76,8 @@ export default function Navbar() {
           onClick={() => handleMenu(false)}
           className={classNames(`pb-[0.9rem]   cursor-pointer pr-4`)}
         >
-          {" "}
-          <AiOutlineClose size={24} />{" "}
+          {' '}
+          <AiOutlineClose size={24} />{' '}
         </span>
       </div>
 
@@ -90,8 +87,8 @@ export default function Navbar() {
         className={classNames(
           `absolute z-[2] bg-gray-500/50 inset-0 transform transition min-h-screen duration-300 md:hidden`,
           {
-            "translate-x-0": isMenuOpen,
-            "-translate-x-full": !isMenuOpen,
+            'translate-x-0': isMenuOpen,
+            '-translate-x-full': !isMenuOpen,
           }
         )}
       ></div>
@@ -101,8 +98,8 @@ export default function Navbar() {
         className={classNames(
           `flex flex-col pt-10 md:pt-0 absolute top-[3.6rem] md:top-0 bottom-0 min-h-screen md:min-h-fit bg-white  md:bg-transparent z-[3] w-[70%] md:w-fit transform md:translate-x-0 transition duration-300 md:relative md:flex-row md:flex md:space-x-4`,
           {
-            "translate-x-0": isMenuOpen,
-            "-translate-x-full": !isMenuOpen,
+            'translate-x-0': isMenuOpen,
+            '-translate-x-full': !isMenuOpen,
           }
         )}
       >
@@ -112,7 +109,7 @@ export default function Navbar() {
             href={item.link}
             key={item.item}
             className={classNames(`nav__link`, {
-              "bg-slate-300 font-semibold": pathname === item.link,
+              'bg-slate-300 font-semibold': pathname === item.link,
             })}
           >
             {item.item}
@@ -123,13 +120,13 @@ export default function Navbar() {
         <Menu>
           {({ isOpen }) => (
             <>
-              <div className="px-4 md:px-0">
+              <div className='px-4 md:px-0'>
                 <MenuButton
-                  className="mt-4 font-normal"
-                  bg="transparent"
-                  _active={{ bg: "transparent" }}
-                  _focus={{ bg: "transparent" }}
-                  _hover={{ bg: "transparent" }}
+                  className='mt-4 font-normal'
+                  bg='transparent'
+                  _active={{ bg: 'transparent' }}
+                  _focus={{ bg: 'transparent' }}
+                  _hover={{ bg: 'transparent' }}
                   isActive={isOpen}
                   as={Button}
                   rightIcon={isOpen ? <BiChevronUp /> : <BiChevronDown />}
@@ -139,9 +136,12 @@ export default function Navbar() {
               </div>
               <MenuList>
                 {dashboardItems.map((item, _) => (
-                  <MenuItem className={classNames(``,{
-                    "bg-slate-300 font-semibold": pathname === item.link,
-                  })} key={item.item}>
+                  <MenuItem
+                    className={classNames(``, {
+                      'bg-slate-300 font-semibold': pathname === item.link,
+                    })}
+                    key={item.item}
+                  >
                     <Link onClick={() => handleMenu(false)} href={item.link}>
                       {item.item}
                     </Link>
@@ -151,10 +151,12 @@ export default function Navbar() {
             </>
           )}
         </Menu>
-        <div className="px-4">
-          <button className="px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400"
-          
-            onClick={async () => { await open() }}
+        <div className='px-4'>
+          <button
+            className='px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400'
+            onClick={async () => {
+              await open();
+            }}
           >
             {buttonText}
           </button>
