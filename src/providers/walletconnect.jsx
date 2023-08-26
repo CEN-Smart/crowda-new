@@ -5,7 +5,6 @@ import { Web3Modal } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon, sepolia, goerli,hardhat } from 'wagmi/chains'
 
-const projectId = '34043931dedf67433e6f95bfa3205586'; //process.env.API_KEY as string
 
 const chains = [arbitrum, mainnet, polygon, sepolia, goerli, hardhat ]
 
