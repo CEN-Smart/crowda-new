@@ -29,11 +29,130 @@ import Image from 'next/image';
 import CustomButton from '../CustomButton';
 import imgPlaceholder from '../../../public/fileplaceholder.png';
 import { LuChevronDown } from 'react-icons/lu';
+import { prepareWriteContract, writeContract, getAccount, waitForTransaction } from '@wagmi/core'
+import { factoryAbi } from "../../constants/index"
+import { parseEther } from 'viem'
+import { Dialog, Transition } from "@headlessui/react";
+import { useState, Fragment } from "react";
+import { useWeb3Modal } from "@web3modal/react";
 
 const FormPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { address, isConnected } = getAccount();
+  const { open, close } = useWeb3Modal();
+
+  const sepoliapriceFeed = "0x694AA1769357215DE4FAC081bf1f309aDC325306"
+  const localhostFeed = "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e"
+  const localhostAddr = "0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F"
+  const sepolia = "0x5bb4758ad76faAa34950fd6EEF0a2fC963f88b2a"
+
+  let [isOpened, setIsOpened] = useState(false);
+  let [completed, setCompleted] = useState(false)
+
+  // modal to ask users to connect
+  function closeModal() {
+    setIsOpened(false);
+  }
+  // modal to ask users to connect
+  function openModal() {
+    setIsOpened(true);
+  }
+  
+  //@ts-ignore
+  async function createProject(amount,minAmount,percentage,stake) {
+    if (isConnected) {
+      const request = await prepareWriteContract({
+        address: localhostAddr,
+        abi: factoryAbi,
+        functionName: 'CreateCrowdSource',
+        value: parseEther(stake.toString()),
+        args: [amount, minAmount, localhostFeed, address, percentage]
+      })
+      console.log('value is ', amount, minAmount)
+      const { hash } = await writeContract(request)
+      const data = await waitForTransaction({
+        confirmations: 1,
+        hash,
+      })
+      console.log(hash);
+      if (data.status == 'success') {
+        // CALL JIMMY'S API HERE
+        console.log(data);
+        setCompleted(true);
+        console.log(completed)
+        onOpen()
+        return true
+      }
+    } else {
+      openModal()
+    }
+  }
+
   return (
     <>
+      
+      {/**------------------------------------------------------> WEB MODAL<------------------------------------------------------ */}
+      <Transition appear show={isOpened} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={closeModal}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-medium leading-6 text-gray-900"
+                    >
+                      Connect Wallet
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Opps!! did you forget to connect your wallet?. please
+                        connect your wallet to continue with Transaction
+                      </p>
+                    </div>
+
+                    <div className="mt-4">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={async () => {
+                          await open();
+                          isConnected? closeModal: null
+                        }}
+                      >
+                        connect wallet
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
+      
+
+      {/** <---------------------------------------End Modal Pop Up -----------------------------------------------------------> */}
+
       <Grid
         minH='auto'
         px={{
@@ -62,9 +181,10 @@ const FormPage = () => {
               minimum: '',
               percentage: '',
               upload: '',
+            stake: '',
             }}
-            onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
-          >
+            onSubmit={ async(values) =>  await createProject(values.howMuch,values.minimum, values.percentage, values.stake)}
+        >
             {({ handleSubmit, errors, touched, isSubmitting }) => (
               <Form onSubmit={handleSubmit}>
                 <Stack spacing={4}>
@@ -273,12 +393,12 @@ const FormPage = () => {
                   {/* Percentage */}
                   <FormControl isInvalid={!!errors.name && touched.name}>
                     <FormLabel htmlFor='percentage'>
-                      How much would you like to raise?
+                      ROI to take on project?
                     </FormLabel>
                     <Box border='1px solid gray' borderRadius='md'>
                       <InputGroup>
                         <InputLeftElement>
-                          <Text>$</Text>
+                          <Text>%</Text>
                         </InputLeftElement>
                         <Field
                           className={`pl-8`}
@@ -302,6 +422,34 @@ const FormPage = () => {
                     </Box>
                     <FormErrorMessage>{errors.percentage}</FormErrorMessage>
                   </FormControl>
+
+
+                        {/* Stake Amount */}
+                  <FormControl isInvalid={!!errors.name && touched.name}>
+                    <FormLabel htmlFor='percentage'>Amount to stake?</FormLabel>
+                    <Box border='1px solid gray' borderRadius='md' >
+                      <InputGroup>
+                        <InputLeftElement>
+                          <Text >$</Text>
+                        </InputLeftElement>
+                        <Field className={`pl-8`} as={Input} name='stake' id='stake' type='number' variant='outline' validate={(value: string) => {
+                          let error
+                          if (!value) {
+                            error = 'Please provide a stake'
+                          }
+                          return error
+                        }} />
+                        <InputRightElement>
+                          <LuChevronDown color='green.500' />
+                        </InputRightElement>
+                      </InputGroup>
+                    </Box>
+                    <FormErrorMessage>
+                      {errors.stake}
+                    </FormErrorMessage>
+                  </FormControl >
+
+
                   {/* Upload Content */}
                   <Center textAlign='center'>
                     <Stack>
@@ -334,8 +482,10 @@ const FormPage = () => {
                   </Center>
                   {/* Next Button */}
                   <CustomButton
-                    onClick={() => {
-                      isSubmitting ? null : onOpen();
+                    onClick={async () => {
+                      // isSubmitting ?
+                    //   null :
+                    // completed&&onOpen();
                     }}
                     type='submit'
                     title='Submit'

@@ -22,6 +22,7 @@ import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { LuChevronDown } from "react-icons/lu";
 import CustomButton from "./CustomButton";
+import { getAccount } from "@wagmi/core";
 
 export default function SingleMarketCard() {
   return (
