@@ -18,7 +18,7 @@ import {
   executionDocs,
   faqsDocs,
   technicalLandscapeDocs,
-} from '../../../libs/docs/docs';
+} from '../../../docs/docs';
 
 export default function AboutPage() {
   return (
@@ -88,7 +88,7 @@ export default function AboutPage() {
             title='Technical Landscape:'
             description='To realize our vision, Project Malaika encompasses three key elements:'
           />
-          <ol className='ml-6 list-alphaUpper space-y-3'>
+          <ol className='ml-6 space-y-3 list-alphaUpper'>
             {technicalLandscapeDocs.map((doc) => (
               <li key={doc.title}>
                 <Text className=' font-[600]'>{doc.title}:</Text>
@@ -136,7 +136,7 @@ export default function AboutPage() {
                     <AccordionIcon />
                   </AccordionButton>
                 </h2>
-                <AccordionPanel className=' text-sm' pb={4}>
+                <AccordionPanel className='text-sm ' pb={4}>
                   {doc.description}
                 </AccordionPanel>
               </AccordionItem>
