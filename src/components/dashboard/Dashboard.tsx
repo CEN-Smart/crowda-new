@@ -22,7 +22,32 @@ export default function Dashboard() {
   const { isOpen:IsOpen1, onClose:OnClose1, onOpen:OnOpen1 } = useDisclosure()
   const { isOpen:IsOpen2, onClose:OnClose2, onOpen:OnOpen2 } = useDisclosure()
   const cancelRef = useRef()
+  
   const { isConnected, address } = getAccount();
+  const [contractAddress, setContractAddress] = useState("")
+
+
+  async function getters() {
+    const  request  = await readContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: factoryAbi,
+      functionName: 'amountNeeded',
+      args : []
+    })
+    console.log(request)
+  }
+
+  async function isContract(contractAddress:string, msgSender:string) {
+    const  request  = await readContract({
+      address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
+      abi: factoryAbi,
+      functionName: 'isOwner',
+      args : [contractAddress,msgSender]
+    })
+    return request
+
+  }
   
   async function isCreator() {
     const  request  = await readContract({
@@ -31,7 +56,37 @@ export default function Dashboard() {
       functionName: 'isCreator',
       args : [address]
     })
+    console.log('request is',request)
+    if (request) {
+      
+      const marketplace = await readContract({
+        address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
+        abi: factoryAbi,
+        functionName: 'getMarketPlace',
+        args : []
+      })
+      console.log(marketplace)
+      for (let i = 0; i < marketplace.length; i++) {
+        //@ts-ignore
+        const exists = await isContract(marketplace[i], address);
+        console.log('exists is', exists)
+        //@ts-ignore
+        if (exists) {
+          return (marketplace[i]);
+        }
+      }
+
+    }
   }
+  useEffect(() => {
+    async function updateUI() {
+      if (isConnected) {
+        const contractAddr = await isCreator()
+        console.log(contractAddr);
+        setContractAddress(contractAddress);
+      }
+    }updateUI()
+  },)
 
 
 
