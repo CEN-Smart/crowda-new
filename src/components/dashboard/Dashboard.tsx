@@ -58,12 +58,12 @@ export default function Dashboard() {
     } 
   }
 
-  async function changeShareAmount(newAmount:string) {
+  async function changeMinAmount(newAmount:string) {
     if (isConnected) {
       const request = await prepareWriteContract({
         address: localhostAddr,
         abi: malaikaAbi,
-        functionName: 'changeShareAmount',
+        functionName: 'changeMinAmount',
         args: [newAmount]
       })
       console.log('value is ', request)
@@ -81,13 +81,22 @@ export default function Dashboard() {
   }
 
   async function getAmount(contractAddress:string) {
-    const  request  = await readContract({
+    const  receipt  = await readContract({
       //@ts-ignore
       address: contractAddress,
       abi: malaikaAbi,
       functionName: 'getRemainderBalance',
       args : []
     })
+    const  response  = await readContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: malaikaAbi,
+      functionName: 'getRemainderBalance',
+      args : []
+    })
+    //@ts-ignore
+    const request = response - receipt
     console.log('getter is', request)
     return request
   }
@@ -201,7 +210,7 @@ export default function Dashboard() {
     placeholder="0x67h4...05c"
     addressNumber="0xe798...9c7" > 
         <CustomButton title='Withdraw' textColor='white' bgColor='black' shadow className='hover:bg-gray-900 hover:font-medium' onClick={async () => {
-          await changeShareAmount("placeholder")
+          await changeMinAmount("placeholder") //change in database too
         }} />
     </CustomModal>
       <Container className='pt-28' >
