@@ -55,7 +55,7 @@ export default function AboutPage() {
             >
               Execution:
             </Heading>
-            <ol className=' space-y-3'>
+            <ol className='ml-6 space-y-3'>
               {executionDocs.map((doc) => (
                 <li key={doc.title}>
                   <Text className=' font-[600]'>{doc.title}:</Text>
@@ -74,7 +74,7 @@ export default function AboutPage() {
             >
               Additional Enhancements:
             </Heading>
-            <ol className=' space-y-3'>
+            <ol className='ml-6 space-y-3'>
               {additionalEnhancementDocs.map((doc) => (
                 <li key={doc.title}>
                   <Text className=' font-[600]'>{doc.title}:</Text>
@@ -88,7 +88,7 @@ export default function AboutPage() {
             title='Technical Landscape:'
             description='To realize our vision, Project Malaika encompasses three key elements:'
           />
-          <ol className=' list-alphaUpper space-y-3'>
+          <ol className='ml-6 list-alphaUpper space-y-3'>
             {technicalLandscapeDocs.map((doc) => (
               <li key={doc.title}>
                 <Text className=' font-[600]'>{doc.title}:</Text>
