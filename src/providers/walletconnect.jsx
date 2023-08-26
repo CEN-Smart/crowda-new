@@ -3,10 +3,10 @@
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { arbitrum, mainnet, polygon, moonbeam, moonbaseAlpha } from 'wagmi/chains'
+import { arbitrum, mainnet, polygon, sepolia, goerli,hardhat } from 'wagmi/chains'
 
 
-const chains = [arbitrum, mainnet, polygon, moonbeam, moonbaseAlpha]
+const chains = [arbitrum, mainnet, polygon, sepolia, goerli, hardhat ]
 
 const projectId = '34043931dedf67433e6f95bfa3205586'//process.env.API_KEY as string
 

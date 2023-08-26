@@ -15,15 +15,15 @@ import { useWeb3Modal } from "@web3modal/react";
 
 
 
-
-
-
 const FormPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { address, isConnected } = getAccount();
   const { open, close } = useWeb3Modal();
 
-  const priceFeed = "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e"
+  const sepoliapriceFeed = "0x694AA1769357215DE4FAC081bf1f309aDC325306"
+  const localhostFeed = "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e"
+  const localhostAddr = "0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F"
+  const sepolia = "0x5bb4758ad76faAa34950fd6EEF0a2fC963f88b2a"
 
   let [isOpened, setIsOpened] = useState(false);
   let [completed, setCompleted] = useState(false)
@@ -36,63 +36,35 @@ const FormPage = () => {
   function openModal() {
     setIsOpened(true);
   }
-  const abi = [
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_amountNeeded",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_minAmount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_priceFeed",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_owner",
-          "type": "address"
-        },
-        {
-          "internalType": "uint8",
-          "name": "_percentage",
-          "type": "uint8"
-        }
-      ],
-      "name": "CreateCrowdSource",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    }
-  ]
+  
   //@ts-ignore
   async function createProject(amount,minAmount,percentage,stake) {
-    const request  = await prepareWriteContract({
-      address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
-      abi: factoryAbi,
-      functionName: 'CreateCrowdSource',
-      value: parseEther(stake),
-      args : [amount,minAmount,priceFeed,address,percentage]
-    })
-    console.log('value is ',amount,minAmount)
-    const { hash } = await writeContract(request)
-    const data = await waitForTransaction({
-      confirmations: 1,
-      hash,
-    })
-    console.log(hash);
-    if (data.status == 'success') {
-      // CALL JIMMY'S API HERE
-      console.log(data);
-      setCompleted(true);
-      return true
-    } 
+    if (isConnected) {
+      const request = await prepareWriteContract({
+        address: localhostAddr,
+        abi: factoryAbi,
+        functionName: 'CreateCrowdSource',
+        value: parseEther(stake.toString()),
+        args: [amount, minAmount, localhostFeed, address, percentage]
+      })
+      console.log('value is ', amount, minAmount)
+      const { hash } = await writeContract(request)
+      const data = await waitForTransaction({
+        confirmations: 1,
+        hash,
+      })
+      console.log(hash);
+      if (data.status == 'success') {
+        // CALL JIMMY'S API HERE
+        console.log(data);
+        setCompleted(true);
+        console.log(completed)
+        onOpen()
+        return true
+      }
+    } else {
+      openModal()
+    }
   }
 
   return (
@@ -144,7 +116,7 @@ const FormPage = () => {
                         className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         onClick={async () => {
                           await open();
-                          isConnected&& closeModal;
+                          isConnected? closeModal: null
                         }}
                       >
                         connect wallet
@@ -185,13 +157,8 @@ const FormPage = () => {
             onSubmit={ async(values) => (
                await createProject(values.howMuch,values.minimum, values.percentage, values.stake)
           )}>
-            {({ handleSubmit, values, errors, touched, isSubmitting }) => (
-              <Form onSubmit={async () => {
-                //isConnected ?
-                  handleSubmit
-                   //: openModal();
-                    
-              }}>
+            {({ handleSubmit, errors, touched, isSubmitting }) => (
+              <Form onSubmit={handleSubmit}>
                 <Stack spacing={4}>
                   <FormControl isInvalid={!!errors.name && touched.name}>
                     <FormLabel htmlFor='name'>Your nickname</FormLabel>
@@ -392,9 +359,9 @@ const FormPage = () => {
                   </Center>
                   {/* Next Button */}
                   <CustomButton onClick={async () => {
-                    isSubmitting ?
-                      null :
-                    completed && onOpen()
+                    // isSubmitting ?
+                    //   null :
+                    // completed&&onOpen()
                   }} type='submit' title='Submit' bgColor='black' textColor='white' className='hover:font-semibold hover:bg-slate-900' />
                 </Stack>
               </Form>
