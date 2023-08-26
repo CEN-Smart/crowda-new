@@ -14,7 +14,7 @@ import { useRef, useState, useEffect } from 'react'
 import {GrLink} from 'react-icons/gr'
 import { GiCardExchange } from 'react-icons/gi'
 import { getAccount, readContract } from '@wagmi/core'
-import { factoryAbi } from '@/constants'
+import { factoryAbi, malaikaAbi } from '@/constants'
 
 
 export default function Dashboard() {
@@ -24,18 +24,32 @@ export default function Dashboard() {
   const cancelRef = useRef()
   
   const { isConnected, address } = getAccount();
-  const [contractAddress, setContractAddress] = useState("")
+  const [AmountRemaining, setAmountRemaining] = useState("loading.....")
+  const[Providers, setProviders] = useState("loading.......")
 
 
-  async function getters() {
+
+  async function getAmount(contractAddress:string) {
     const  request  = await readContract({
       //@ts-ignore
       address: contractAddress,
-      abi: factoryAbi,
-      functionName: 'amountNeeded',
+      abi: malaikaAbi,
+      functionName: 'getRemainderBalance',
       args : []
     })
-    console.log(request)
+    console.log('getter is', request)
+    return request
+  }
+  async function getProvider(contractAddress:string) {
+    const  request  = await readContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: malaikaAbi,
+      functionName: 'getShareHolders',
+      args : []
+    })
+    console.log('providers is', request)
+    return request
   }
 
   async function isContract(contractAddress:string, msgSender:string) {
@@ -83,10 +97,22 @@ export default function Dashboard() {
       if (isConnected) {
         const contractAddr = await isCreator()
         console.log(contractAddr);
-        setContractAddress(contractAddress);
+        //@ts-ignore
+        const amount = await getAmount(contractAddr)
+        console.log('amount is', amount)
+        //@ts-ignore
+        setAmountRemaining((BigInt(amount)/BigInt(1e18)).toString())
+        //@ts-ignore
+        console.log('amount is remaining',AmountRemaining)
+        //@ts-ignore
+        const backers = await getProvider(contractAddr);
+        console.log('backers are', backers)
+        //@ts-ignore
+        setProviders(backers.toString())
+        console.log("provider is ",Providers)
       }
     }updateUI()
-  },)
+  },[isConnected,AmountRemaining,Providers])
 
 
 
@@ -133,8 +159,8 @@ export default function Dashboard() {
             </div>
           </div>
           <div className='flex flex-col md:flex-row gap-8'>
-            <DashboardCard bgColor='limegreen.400' icon={HiOutlineCurrencyDollar} iconLabel='Current balance' currencyValue='$5,000.66' footerText='Available to withdraw' />
-            <DashboardCard bgColor='gray.200' icon={TbUsersGroup} iconLabel='Total backers' currencyValue='10,000' link='view all' />
+            <DashboardCard bgColor='limegreen.400' icon={HiOutlineCurrencyDollar} iconLabel='Current balance' currencyValue={AmountRemaining} footerText='Available to withdraw' />
+            <DashboardCard bgColor='gray.200' icon={TbUsersGroup} iconLabel='Total backers' currencyValue={Providers} link='view all' />
           </div>
           <CardAvatar />
         </div>
