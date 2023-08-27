@@ -100,7 +100,7 @@ const CardAvatar = () => {
       >
         Published projects (3)
       </Heading>
-      <Card bgColor='gray.100' className='shadow-primary'>
+      <Card className='shadow-primary'>
         <CardHeader>
           <Flex className=' items-center gap-2 justify-between w-[58%]'>
             <Heading as='h4' size='sm'>
