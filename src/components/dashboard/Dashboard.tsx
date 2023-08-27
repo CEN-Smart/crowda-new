@@ -29,6 +29,7 @@ export default function Dashboard() {
   const { isConnected, address } = getAccount();
   const [AmountRemaining, setAmountRemaining] = useState("loading.....")
   const [Providers, setProviders] = useState("loading.......")
+  const [OwnerContract, setOwnerContract] = useState("")
   
   const localhostAddr = "0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F"
   //@ts-ignore
@@ -39,7 +40,8 @@ export default function Dashboard() {
   async function changeOwner(newOwner:string) {
     if (isConnected) {
       const request = await prepareWriteContract({
-        address: localhostAddr,
+        //@ts-ignore
+        address: OwnerContract,
         abi: malaikaAbi,
         functionName: 'changeOwner',
         args: [newOwner]
@@ -60,8 +62,9 @@ export default function Dashboard() {
 
   async function changeMinAmount(newAmount:string) {
     if (isConnected) {
-      const request = await prepareWriteContract({
-        address: localhostAddr,
+      const request = await prepareWriteContract({  
+        //@ts-ignore
+        address: OwnerContract,
         abi: malaikaAbi,
         functionName: 'changeMinAmount',
         args: [newAmount]
@@ -92,12 +95,14 @@ export default function Dashboard() {
       //@ts-ignore
       address: contractAddress,
       abi: malaikaAbi,
-      functionName: 'getRemainderBalance',
+      functionName: 'getAmountNeeded',
       args : []
     })
     //@ts-ignore
     const request = response - receipt
-    console.log('getter is', request)
+    console.log('remaining balance is', request)
+    console.log('amount needed is is', response)
+
     return request
   }
   async function getProvider(contractAddress:string) {
@@ -158,10 +163,12 @@ export default function Dashboard() {
         const contractAddr = await isCreator()
         console.log(contractAddr);
         //@ts-ignore
+        setOwnerContract(contractAddr)
+        //@ts-ignore
         const amount = await getAmount(contractAddr)
         console.log('amount is', amount)
         //@ts-ignore
-        setAmountRemaining((BigInt(amount)/BigInt(1e18)).toString())
+        setAmountRemaining((BigInt(amount)).toString())
         //@ts-ignore
         console.log('amount is remaining',AmountRemaining)
         //@ts-ignore
@@ -172,7 +179,7 @@ export default function Dashboard() {
         console.log("provider is ",Providers)
       }
     }updateUI()
-  },[isConnected,AmountRemaining,Providers])
+  },[isConnected,AmountRemaining,Providers,OwnerContract])
 
 
 
@@ -223,10 +230,10 @@ export default function Dashboard() {
             </div>
           </div>
           <div className='flex flex-col md:flex-row gap-8'>
-            <DashboardCard bgColor='limegreen.400' icon={HiOutlineCurrencyDollar} iconLabel='Current balance' currencyValue={AmountRemaining} footerText='Available to withdraw' />
+            <DashboardCard bgColor='limegreen.400' icon={HiOutlineCurrencyDollar} iconLabel='Current balance' currencyValue={`$${AmountRemaining}.00`} footerText='Available to withdraw' />
             <DashboardCard bgColor='gray.200' icon={TbUsersGroup} iconLabel='Total backers' currencyValue={Providers} link='view all' />
           </div>
-          <CardAvatar />
+          <CardAvatar contractAddress={OwnerContract} />
         </div>
       </Container>
     </section>

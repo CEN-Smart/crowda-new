@@ -91,6 +91,16 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "UnableToUnstake",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "YouHaveBeenUnstaked",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

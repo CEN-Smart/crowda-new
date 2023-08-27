@@ -19,9 +19,15 @@ import CustomButton from './CustomButton';
 import { GiCardExchange } from 'react-icons/gi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import CustomModal from './CustomModal';
-import { useRef } from 'react';
+import { useRef,useState } from 'react';
+import { getAccount, prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core'
+import { factoryAbi, malaikaAbi } from '@/constants'
 
-const CardAvatar = () => {
+
+
+const CardAvatar = ({contractAddress} : { contractAddress: string }) => {
+  console.log("Avatar contract is ",contractAddress); // Output: "My contract"
+
   const {
     isOpen: IsOpen1,
     onClose: OnClose1,
@@ -33,6 +39,54 @@ const CardAvatar = () => {
     onOpen: OnOpen2,
   } = useDisclosure();
   const cancelRef = useRef();
+
+  const { address, isConnected } = getAccount();
+
+  async function cancelContract() {
+    const request = await prepareWriteContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: malaikaAbi,
+      functionName: 'revertDonations',
+      args: []
+    })
+    console.log('value is ', request)
+      const { hash } = await writeContract(request)
+      const data = await waitForTransaction({
+        confirmations: 1,
+        hash,
+      })
+      console.log(hash);
+      if (data.status == 'success') {
+        console.log(data);
+        return true
+      }
+
+  }
+
+  async function withdraw() {
+    const request = await prepareWriteContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: malaikaAbi,
+      functionName: 'withdraw',
+      args: []
+    })
+    console.log('value is ', request)
+      const { hash } = await writeContract(request)
+      const data = await waitForTransaction({
+        confirmations: 1,
+        hash,
+      })
+      console.log(hash);
+      if (data.status == 'success') {
+        console.log(data);
+        return true
+      }
+
+  }
+
+
   return (
     <>
       {/* Custom dialog 1*/}
@@ -58,6 +112,7 @@ const CardAvatar = () => {
           bgColor='black'
           shadow
           className='hover:bg-gray-900 hover:font-medium'
+          onClick={async()=>{await withdraw()}}
         />
       </CustomModal>
       {/* Custom dialog 2*/}
@@ -79,6 +134,7 @@ const CardAvatar = () => {
           bgColor='red.500'
           shadow
           className='hover:bg-rose-600 hover:font-medium'
+          onClick={async()=>{await cancelContract()}}
         />
         <CustomButton
           onClick={OnClose2}
