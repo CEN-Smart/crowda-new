@@ -172,9 +172,9 @@ export default function Navbar() {
         <Button className='mt-4 ml-auto w-fit' onClick={toggleColorMode}>
           {colorMode === 'light' ? <IoIosMoon /> : <IoIosSunny />}
         </Button>
-        <div className='px-4'>
+        <div className='px-4 shrink-0'>
           <button
-            className='px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[10rem] md:mt-3 bg-slate-500 font-semibold hover:bg-gray-400'
+            className='px-4  py-3 transition duration-300 tracking-wider rounded w-full mt-[10rem] md:mt-3 bg-slate-500 font-semibold hover:bg-gray-400'
             onClick={async () => {
               await open();
             }}
