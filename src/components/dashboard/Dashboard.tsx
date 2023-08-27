@@ -219,7 +219,7 @@ export default function Dashboard() {
           initialValues={{
             howMuch: '',
           }}
-          onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+          onSubmit={async(values) => await changeOwner(values.howMuch)} //change in database too
         >
           {({ handleSubmit, errors, touched, isSubmitting }) => (
             <Form onSubmit={handleSubmit}>
@@ -253,9 +253,7 @@ export default function Dashboard() {
                 bgColor='black'
                 shadow
                 className='hover:bg-gray-900 hover:font-medium mt-4 ml-[35%]'
-                onClick={async () => {
-                  await changeOwner('placeholder');
-                }}
+            
               />
             </Form>
           )}
@@ -277,9 +275,9 @@ export default function Dashboard() {
           initialValues={{
             howMuch: '',
           }}
-          onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+          onSubmit={async(values) => await changeMinAmount(values.howMuch)}
         >
-          {({ handleSubmit, errors, touched, isSubmitting }) => (
+          {({ handleSubmit, errors,values, touched, isSubmitting }) => (
             <Form onSubmit={handleSubmit}>
               <FormControl isInvalid={!!errors.howMuch && touched.howMuch}>
                 <FormLabel htmlFor='howMuch'>New address</FormLabel>
@@ -311,9 +309,7 @@ export default function Dashboard() {
                 bgColor='black'
                 shadow
                 className='hover:bg-gray-900 hover:font-medium mt-4 ml-[35%]'
-                onClick={async () => {
-                  await changeMinAmount('placeholder'); //change in database too
-                }}
+
               />
             </Form>
           )}

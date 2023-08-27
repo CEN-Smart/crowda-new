@@ -22,9 +22,68 @@ import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { LuChevronDown } from "react-icons/lu";
 import CustomButton from "./CustomButton";
-import { getAccount } from "@wagmi/core";
+import { getAccount, readContract, } from '@wagmi/core';
+import { factoryAbi, malaikaAbi } from '@/constants';
+import { prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core';
+import { useState, useEffect } from "react";
+import { parseEther } from 'viem';
+
+
+
 
 export default function SingleMarketCard() {
+  const [ContractAddr, setContractAddr] = useState("")
+  const [Donaters, setDonaters] = useState([])
+  const {address, isConnected} = getAccount()
+  
+  async function donate(amount:string) {
+    if (isConnected) {
+      const request = await prepareWriteContract({  
+        //@ts-ignore
+        address: OwnerContract,
+        abi: malaikaAbi,
+        functionName: 'donate',
+        args: [],
+        value:parseEther(amount)
+      });
+      console.log('value is ', request);
+      const { hash } = await writeContract(request);
+      const data = await waitForTransaction({
+        confirmations: 1,
+        hash,
+      });
+      console.log(hash);
+      if (data.status == 'success') {
+        console.log(data);
+        return true;
+      }
+    }
+  }
+
+  async function getHolders() {
+    const receipt = await readContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: malaikaAbi,
+      functionName: 'getHoldersArray',
+      args: [],
+    });
+    return receipt
+  } 
+  useEffect(() => {
+    async function updateUI() {      
+        const holders = await getHolders();
+        console.log("holders are ",holders);
+        //@ts-ignore
+        setDonaters(holders)        
+      }    
+    updateUI();
+  }, [Donaters]);
+
+
+  
+  
+  
   return (
     <>
       <Box className="px-4 pt-32 mx-auto lg:px-12 md:px-8">
@@ -162,11 +221,11 @@ export default function SingleMarketCard() {
                   Contact address
                 </Heading>
                 <Text className="text-sm break-all ">
-                  {" "}
+                  {ContractAddr}
                   0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E
                   <Link
                     className="underline transition block font-[500] hover:no-underline duration-300"
-                    href="/marketplace/marketId/view-on-etherscan"
+                    href={`https://www.etherscan.com/${ContractAddr}`}
                   >
                     View on etherscan
                   </Link>
