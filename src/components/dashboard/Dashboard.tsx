@@ -27,8 +27,8 @@ export default function Dashboard() {
   const cancelRef = useRef()
   
   const { isConnected, address } = getAccount();
-  const [AmountRemaining, setAmountRemaining] = useState("loading.....")
-  const [Providers, setProviders] = useState("loading.......")
+  const [AmountRemaining, setAmountRemaining] = useState("")
+  const [Providers, setProviders] = useState("")
   const [OwnerContract, setOwnerContract] = useState("")
   
   const localhostAddr = "0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F"
