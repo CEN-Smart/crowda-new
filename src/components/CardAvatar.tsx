@@ -49,7 +49,6 @@ const CardAvatar = () => {
         address='Wallet address:'
         addressText='000XA...0Xe'
         primaryText='Confirm wallet address'
-        placeholder='000Xe...0Xe'
         addressNumber='0xaB6B4...14E'
       >
         <CustomButton
@@ -57,7 +56,7 @@ const CardAvatar = () => {
           textColor='white'
           bgColor='black'
           shadow
-          className='hover:bg-gray-900 hover:font-medium'
+          className='hover:bg-gray-900 hover:font-medium mt-6 ml-[35%]'
         />
       </CustomModal>
       {/* Custom dialog 2*/}
@@ -73,21 +72,23 @@ const CardAvatar = () => {
         iconLabel='Cancel project'
         secondaryText='You will no longer have access to this project after canceling. Funds will be automatically transferred to all backers.'
       >
-        <CustomButton
-          title='Cancel project'
-          textColor='white'
-          bgColor='red.500'
-          shadow
-          className='hover:bg-rose-600 hover:font-medium'
-        />
-        <CustomButton
-          onClick={OnClose2}
-          title='Go Back'
-          textColor='black'
-          shadow
-          border
-          className=' hover:font-medium'
-        />
+        <ButtonGroup className='flex-col gap-2 ml-[30%] '>
+          <CustomButton
+            title='Cancel project'
+            textColor='white'
+            bgColor='red.500'
+            shadow
+            className='hover:bg-rose-600 hover:font-medium'
+          />
+          <CustomButton
+            onClick={OnClose2}
+            title='Go Back'
+            textColor='black'
+            shadow
+            border
+            className=' hover:font-medium'
+          />
+        </ButtonGroup>
       </CustomModal>
       <Heading
         as='h3'
@@ -99,7 +100,7 @@ const CardAvatar = () => {
       >
         Published projects (3)
       </Heading>
-      <Card bgColor='gray.200' className='shadow-primary pb-28'>
+      <Card bgColor='gray.100' className='shadow-primary'>
         <CardHeader>
           <Flex className=' items-center gap-2 justify-between w-[58%]'>
             <Heading as='h4' size='sm'>
@@ -167,64 +168,6 @@ const CardAvatar = () => {
               />
               <CustomButton
                 onClick={OnOpen2}
-                iconClassName='text-rose-600'
-                icon={IoIosCloseCircleOutline}
-                textColor='black'
-                border
-                title='Cancel project'
-              />
-            </ButtonGroup>
-          </Flex>
-
-          {/* 2ND AVATAR CONTAINER */}
-
-          <Flex
-            alignItems='center'
-            className='w-full overflow-auto border border-black rounded-md bg-slate-900'
-          >
-            <Flex className='items-center justify-between flex-1 gap-2 px-6 text-white'>
-              <Flex alignItems='center ' className='shrink-0 '>
-                <Image
-                  className='object-cover rounded-full '
-                  width={25}
-                  height={25}
-                  src={moonImg}
-                  alt='The moon Image'
-                />
-                <Text ml='2'>The Moon</Text>
-              </Flex>
-              <Text className=''>$2,000</Text>
-              <Progress
-                className='rounded-full'
-                value={60}
-                w={80}
-                size='sm'
-                colorScheme='green'
-              />
-              <Stack direction='row' pr='1rem' spacing={2} alignItems='center'>
-                <AvatarGroup size='sm'>
-                  <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' />
-                  <Avatar
-                    name='Prosper Otemuyiwa'
-                    src='https://bit.ly/prosper-baba'
-                  />
-                  <Avatar
-                    name='Christian Nwamba'
-                    src='https://bit.ly/code-beast'
-                  />
-                </AvatarGroup>
-                <Text className='shrink-0'>+30 others.</Text>
-              </Stack>
-            </Flex>
-            <ButtonGroup spacing={8} className='px-4 py-2 bg-white'>
-              <CustomButton
-                iconClassName='text-blue-600'
-                icon={GiCardExchange}
-                textColor='black'
-                border
-                title='Withdraw funds'
-              />
-              <CustomButton
                 iconClassName='text-rose-600'
                 icon={IoIosCloseCircleOutline}
                 textColor='black'

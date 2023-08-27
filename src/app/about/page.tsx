@@ -16,7 +16,6 @@ import {
 import {
   additionalEnhancementDocs,
   executionDocs,
-  faqsDocs,
   technicalLandscapeDocs,
 } from '../../../docs/docs';
 
@@ -110,42 +109,6 @@ export default function AboutPage() {
             <br />
             Discover the journey of mutual empowerment and shared rewards with
             Project Malaika. Welcome to the future of crowdfunding.
-          </Text>
-          <Heading
-            size={{
-              base: 'md',
-              md: 'lg',
-            }}
-            pt={3}
-          >
-            Frequently Asked Questions (FAQs) - Project Malaika
-          </Heading>
-          <Accordion allowToggle>
-            {faqsDocs.map((doc) => (
-              <AccordionItem key={doc.title}>
-                <h2>
-                  <AccordionButton>
-                    <Box
-                      className=' text-gray-700 font-[500]'
-                      as='span'
-                      flex='1'
-                      textAlign='left'
-                    >
-                      {doc.title}
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel className='text-sm ' pb={4}>
-                  {doc.description}
-                </AccordionPanel>
-              </AccordionItem>
-            ))}
-          </Accordion>
-          <Text>
-            We hope this FAQ section addresses your questions about Project
-            Malaika. If you have any additional queries, feel free to reach out
-            to our support team for further assistance.
           </Text>
         </Stack>
       </Container>

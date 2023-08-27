@@ -6,10 +6,19 @@ import { useCallback, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import Logo from './Logo';
 import { usePathname } from 'next/navigation';
-import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useColorMode,
+} from '@chakra-ui/react';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { useWeb3Modal } from '@web3modal/react';
 import { getAccount } from '@wagmi/core';
+import { IoIosMoon } from 'react-icons/io';
+import { IoIosSunny } from 'react-icons/io';
 
 interface MenuItems {
   [key: string]: string;
@@ -27,6 +36,8 @@ const dashboardItems: MenuItems[] = [
 ];
 
 export default function Navbar() {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const bgColor = colorMode === 'light' ? 'white' : 'slate-900';
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const handleMenu = useCallback((action: boolean) => {
@@ -49,7 +60,9 @@ export default function Navbar() {
   return (
     <header
       className={classNames(
-        `flex bg-white border-b border-black shadow-primary items-center justify-between md:px-4 lg:px-8 fixed w-full z-[1]`
+        `flex bg-${
+          bgColor as string
+        } border-b border-b-${bgColor} shadow-primary items-center justify-between md:px-4 lg:px-8 fixed w-full z-[1]`
       )}
     >
       {/* Logo to show on Desktop view */}
@@ -61,7 +74,9 @@ export default function Navbar() {
       <div
         className={classNames(
           `
-      absolute z-[4] pt-[1.3rem] md:pt-0 drop-shadow-2xl bg-white shadow-primary border-b border-black flex items-center justify-between md:hidden w-[70%] transform transition duration-300`,
+      absolute z-[4] pt-[1.3rem] md:pt-0 drop-shadow-2xl bg-${
+        bgColor as string
+      } shadow-primary border-b border-b-${bgColor} flex items-center justify-between md:hidden w-[70%] transform transition duration-300`,
           {
             '-translate-x-full': !isMenuOpen,
             'translate-x-0': isMenuOpen,
@@ -96,7 +111,9 @@ export default function Navbar() {
       {/* Nav Links */}
       <nav
         className={classNames(
-          `flex flex-col pt-10 md:pt-0 absolute top-[3.6rem] md:top-0 bottom-0 min-h-screen md:min-h-fit bg-white  md:bg-transparent z-[3] w-[70%] md:w-fit transform md:translate-x-0 transition duration-300 md:relative md:flex-row md:flex md:space-x-4`,
+          `flex flex-col pt-10 md:pt-0 absolute top-[3.6rem] md:top-0 bottom-0 min-h-screen md:min-h-fit bg-${
+            bgColor as string
+          }  md:bg-transparent z-[3] w-[70%] md:w-fit transform md:translate-x-0 transition duration-300 md:relative md:flex-row md:flex md:space-x-4`,
           {
             'translate-x-0': isMenuOpen,
             '-translate-x-full': !isMenuOpen,
@@ -109,7 +126,7 @@ export default function Navbar() {
             href={item.link}
             key={item.item}
             className={classNames(`nav__link`, {
-              'bg-slate-300 font-semibold': pathname === item.link,
+              'bg-slate-500 font-semibold': pathname === item.link,
             })}
           >
             {item.item}
@@ -151,9 +168,13 @@ export default function Navbar() {
             </>
           )}
         </Menu>
+        {/* End of DropDown Menu */}
+        <Button className='mt-4 ml-auto w-fit' onClick={toggleColorMode}>
+          {colorMode === 'light' ? <IoIosMoon /> : <IoIosSunny />}
+        </Button>
         <div className='px-4'>
           <button
-            className='px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[70%] md:mt-3 bg-slate-300 font-semibold hover:bg-gray-400'
+            className='px-4 py-3 transition duration-300 tracking-wider rounded w-full mt-[10rem] md:mt-3 bg-slate-500 font-semibold hover:bg-gray-400'
             onClick={async () => {
               await open();
             }}
