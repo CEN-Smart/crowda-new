@@ -13,8 +13,9 @@ import {
   FormControl,
   FormLabel,
   Input,
-} from "@chakra-ui/react";
-import { IconType } from "react-icons";
+  Heading,
+} from '@chakra-ui/react';
+import { IconType } from 'react-icons';
 
 interface Props {
   children: React.ReactNode;
@@ -27,13 +28,14 @@ interface Props {
   iconClassName?: string;
   isOpen: boolean;
   onClose(): void;
-  motionPreset?: "slideInBottom" | "slideInRight" | "scale" | "none";
+  motionPreset?: 'slideInBottom' | 'slideInRight' | 'scale' | 'none';
   leastDestructiveRef: any;
   isCentered: boolean;
   placeholder?: string;
   hasInputField?: boolean;
   hasTextField?: boolean;
   addressText?: string;
+  footerEl?: React.ReactNode;
 }
 
 export default function CustomModal({
@@ -50,15 +52,16 @@ export default function CustomModal({
   motionPreset,
   leastDestructiveRef,
   isCentered,
+  footerEl,
   placeholder,
   hasInputField,
   hasTextField,
-  addressText
+  addressText,
 }: Props) {
   return (
     <>
       <AlertDialog
-        size="sm"
+        size='sm'
         motionPreset={motionPreset}
         leastDestructiveRef={leastDestructiveRef}
         onClose={onClose}
@@ -67,49 +70,34 @@ export default function CustomModal({
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent className="mx-auto">
+        <AlertDialogContent className='mx-auto'>
           <AlertDialogHeader>
-            <Stack className="text-center">
-              <Flex className="items-center mx-auto gap-2 text-[1rem]">
+            <Stack className='text-center'>
+              <Flex className='items-center mx-auto gap-2 text-[1rem]'>
                 <Icon className={iconClassName} aria-label={iconLabel} />
                 <span>{iconLabel}</span>
               </Flex>
-            <Text as='p' className="text-sm font-normal text-slate-500">{secondaryText}</Text>
-              <Text className="text-sm">
-                <span className=" text-gray-500">{address}{" "}
-                </span>
+              <Text as='p' className='text-sm font-normal text-slate-500'>
+                {secondaryText}
+              </Text>
+              <Text className='text-sm'>
+                <span className=' text-gray-500'>{address} </span>
                 <strong>{addressNumber}</strong>
               </Text>
             </Stack>
+            {hasTextField && (
+              <>
+                <Heading size='sm' className='pt-8 pb-2'>
+                  {primaryText}
+                </Heading>
+                <Text className='text-sm font-normal text-slate-500 break-all'>
+                  {addressNumber}
+                </Text>
+              </>
+            )}
           </AlertDialogHeader>
           <AlertDialogCloseButton />
-          <AlertDialogBody>
-           { hasInputField &&  <form>
-              <FormControl>
-                <FormLabel htmlFor="address">{primaryText}</FormLabel>
-                <Input
-                  size="lg"
-                  className="border border-black placeholder-gray-400 overflow-x-clip "
-                  variant="outline"
-                  id="address"
-                  name="address"
-                  type="text"
-                  placeholder={placeholder}
-                />
-              </FormControl>
-            </form>}
-            {hasTextField && 
-            <Stack>
-              <Text className='text-sm font-medium'>
-                {primaryText}
-              </Text>
-              <span className=" text-gray-500 text-sm">{addressText}</span>
-              </Stack>}
-          </AlertDialogBody>
-          <AlertDialogFooter
-          className="mx-auto">
-            <ButtonGroup flexDir='column' gap={2}>{children}</ButtonGroup>
-          </AlertDialogFooter>
+          <AlertDialogBody>{children}</AlertDialogBody>
         </AlertDialogContent>
       </AlertDialog>
     </>
