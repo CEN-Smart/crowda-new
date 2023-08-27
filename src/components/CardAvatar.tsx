@@ -58,6 +58,7 @@ const CardAvatar = ({contractAddress} : { contractAddress: string }) => {
       })
       console.log(hash);
       if (data.status == 'success') {
+        //delete contract from database
         console.log(data);
         return true
       }

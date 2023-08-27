@@ -82,6 +82,11 @@
   },
   {
     "inputs": [],
+    "name": "OwnerCouldNotBeChanged",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "SeedValueAlreadyWithdrawn",
     "type": "error"
   },

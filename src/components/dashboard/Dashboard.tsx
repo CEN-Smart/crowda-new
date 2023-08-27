@@ -135,7 +135,7 @@ export default function Dashboard() {
       functionName: 'isCreator',
       args : [address]
     })
-    console.log('request is',request)
+    console.log('isCreator is',request)
     if (request) {
       
       const marketplace = await readContract({

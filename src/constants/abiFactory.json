@@ -1,7 +1,22 @@
 [
   {
     "inputs": [],
+    "name": "OwnerAlreadyExsists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "OwnerMustEqualSender",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OwnerShipWasTransfered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReversedTransaction",
     "type": "error"
   },
   {
@@ -12,6 +27,11 @@
   {
     "inputs": [],
     "name": "TransactionFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnstakeNotApproved",
     "type": "error"
   },
   {
@@ -37,6 +57,25 @@
       }
     ],
     "name": "CrowdSourceCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ReversedInternalTransaction",
     "type": "event"
   },
   {
@@ -106,7 +145,13 @@
       }
     ],
     "name": "allowUnstake",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -124,7 +169,13 @@
       }
     ],
     "name": "changeOwner",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -196,5 +247,9 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]
