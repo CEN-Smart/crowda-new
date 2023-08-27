@@ -155,7 +155,7 @@ const CardAvatar = ({contractAddress} : { contractAddress: string }) => {
         }}
         mb='2'
       >
-        Published projects (3)
+        Published project
       </Heading>
       <Card className='shadow-primary'>
         <CardHeader>

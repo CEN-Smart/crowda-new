@@ -54,8 +54,8 @@ export default function Dashboard() {
 
   const { isConnected, address } = getAccount();
   const [AmountRemaining, setAmountRemaining] = useState('');
-  const [Providers, setProviders] = useState('")
-  const [OwnerContract, setOwnerContract] = useState("');
+  const [Providers, setProviders] = useState("")
+  const [OwnerContract, setOwnerContract] = useState("");
 
   const localhostAddr = '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F';
   //@ts-ignore
@@ -187,8 +187,7 @@ export default function Dashboard() {
         const amount = await getAmount(contractAddr);
         console.log('amount is', amount);
         //@ts-ignore
-        setAmountRemaining((BigInt(amount) / BigInt(1e18)).toString());
-        setAmountRemaining((BigInt(amount)).toString())
+        setAmountRemaining(`$${(BigInt(amount)).toString()}.00`)
         //@ts-ignore
         console.log('amount is remaining', AmountRemaining);
         //@ts-ignore
