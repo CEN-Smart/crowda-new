@@ -35,6 +35,7 @@ import {
 } from '@wagmi/core';
 import { Formik, Form, Field } from 'formik';
 import { LuChevronDown } from 'react-icons/lu';
+import server from "../../server"
 
 export default function Dashboard() {
   const { colorMode } = useColorMode();
@@ -56,6 +57,8 @@ export default function Dashboard() {
   const [AmountRemaining, setAmountRemaining] = useState('');
   const [Providers, setProviders] = useState("")
   const [OwnerContract, setOwnerContract] = useState("");
+  const [Nickname, setNickname] = useState('');
+  const [Data, setData] = useState('');
 
   const localhostAddr = '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F';
   //@ts-ignore
@@ -78,6 +81,21 @@ export default function Dashboard() {
       });
       console.log(hash);
       if (data.status == 'success') {
+        const values = 
+          {
+            name: Data[0] ,
+            title: Data[1],
+            description: Data[2],
+            category: Data[3],
+            howMuch: Data[4],
+            minimum: Data[5],
+            percentage: Data[6],
+            upload: Data[7],
+            stake: Data[8],
+        }
+        console.log("values is ", values)
+        await server.post(`update/${newOwner}`, values)
+        await server.delete(`del/${address}`)
         console.log(data);
         return true;
       }
@@ -176,6 +194,13 @@ export default function Dashboard() {
       }
     }
   }
+  async function getPackage(address:string) {  
+    const {data:{data}} =  await server.get(`package/${address}`)
+    if (data != undefined ) {
+      console.log(data)
+      return data
+    }
+  }
   useEffect(() => {
     async function updateUI() {
       if (isConnected) {
@@ -196,10 +221,23 @@ export default function Dashboard() {
         //@ts-ignore
         setProviders(backers.toString());
         console.log('provider is ', Providers);
+        
+
       }
     }
     updateUI();
-  }, [isConnected, AmountRemaining, Providers,OwnerContract]);
+  }, [isConnected, AmountRemaining, Providers, OwnerContract]);
+
+  useEffect(() => {
+    async function updateName() {
+      //@ts-ignore
+      const nickname = await getPackage(address);
+      setData(nickname)
+      console.log(nickname)
+      setNickname(`Hello ${nickname[0]},`)
+      console.log('nickname is ', Nickname);
+    }updateName()
+  },[address,Nickname])
 
   return (
     <section>
@@ -319,7 +357,7 @@ export default function Dashboard() {
         <div className='space-y-10'>
           <div className='flex flex-col items-start justify-start gap-6 lg:flex-row lg:items-center lg:justify-between'>
             <SecondaryHeading
-              heading='Hello Poppins,'
+              heading={Nickname}
               title='You can manage your listed projects and do much more here.'
             />
             <div className='flex flex-col gap-8 md:flex-row'>

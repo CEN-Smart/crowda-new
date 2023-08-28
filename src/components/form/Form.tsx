@@ -42,6 +42,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
 import { useWeb3Modal } from '@web3modal/react';
 import { useRouter } from 'next/navigation';
+import server from "../../server"
 
 const FormPage = () => {
   const { colorMode } = useColorMode();
@@ -68,7 +69,7 @@ const FormPage = () => {
   }
 
   //@ts-ignore
-  async function createProject(amount, minAmount, percentage, stake) {
+  async function createProject(amount, minAmount, percentage, stake, values) {
     if (isConnected) {
       const request = await prepareWriteContract({
         address: localhostAddr,
@@ -85,7 +86,7 @@ const FormPage = () => {
       });
       console.log(hash);
       if (data.status == 'success') {
-        // CALL JIMMY'S API HERE
+        await server.post(`append/${address}`, values)
         console.log(data);
         setCompleted(true);
         console.log(completed);
@@ -195,7 +196,8 @@ const FormPage = () => {
                 values.howMuch,
                 values.minimum,
                 values.percentage,
-                values.stake
+                values.stake,
+                values
               )
             }
           >
