@@ -2,8 +2,54 @@
 import { Text, SimpleGrid, GridItem, Box, Grid, Heading } from "@chakra-ui/react";
 import Container from "./Container";
 import MarketCard from "./MarketCard";
+import server from "../server"
+import { getAccount } from "@wagmi/core";
+import { useState, useEffect } from "react";
+
+
 
 export default function MarketList() {
+  const [Marketplace, setMarkeplace] = useState('');
+  const [DynamicData, setDynamicData] = useState('');
+  const { isConnected } = getAccount();
+
+
+  async function getMarket() {
+    const { data: { data } } = await server.get('docsAll');
+    if (data != undefined ) {
+      setMarkeplace(JSON.parse(data))
+    } else {
+      console.log(data)
+      return false
+    }
+
+  }
+
+  async function getSingle(address:string) {
+    const { data: { data } } = await server.get(`/docsGet/${address}`);
+    if (data != undefined ) {
+      setDynamicData(JSON.parse(data))
+    } else {
+      console.log(data)
+      return false
+    }
+  }
+  
+
+  useEffect(() => {
+    async function updateUI() {
+      if (isConnected) {
+        const response = await getMarket();
+        console.log("response are ", response);
+        //@ts-ignore
+        const amount: any = await getSingle()
+        console.log(amount)
+      }
+    }  
+    updateUI();
+  }, );
+
+  
   return (
     <>
       <Container className="pt-28">

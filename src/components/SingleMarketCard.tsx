@@ -30,11 +30,11 @@ import { parseEther } from 'viem';
 
 
 
-
 export default function SingleMarketCard() {
   const [ContractAddr, setContractAddr] = useState("")
-  const [Donaters, setDonaters] = useState([])
-  const {address, isConnected} = getAccount()
+  const [Donaters, setDonaters] = useState([]) // see the array to loop through to display contributors
+  const { address, isConnected } = getAccount()
+  const [AmountDonated, setAmountDonated] = useState("");
   
   async function donate(amount:string) {
     if (isConnected) {
@@ -70,15 +70,37 @@ export default function SingleMarketCard() {
     });
     return receipt
   } 
+  async function getAmount(contractAddress: string) {
+    const receipt = await readContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: malaikaAbi,
+      functionName: 'getRemainderBalance',
+      args: [],
+    });
+    const response = await readContract({
+      //@ts-ignore
+      address: contractAddress,
+      abi: malaikaAbi,
+      functionName: 'getAmountNeeded',
+      args: [],
+    });
+    //@ts-ignore
+    const request = response - receipt
+    console.log('getter is', request)
+    return request
+  }
   useEffect(() => {
     async function updateUI() {      
         const holders = await getHolders();
         console.log("holders are ",holders);
         //@ts-ignore
-        setDonaters(holders)        
+      setDonaters(holders) 
+      const amount:any = await getAccount()
+      setAmountDonated(amount);
       }    
     updateUI();
-  }, [Donaters]);
+  }, [Donaters,AmountDonated]);
 
 
   
