@@ -25,9 +25,10 @@ import { factoryAbi, malaikaAbi } from '@/constants'
 
 
 
-const CardAvatar = ({contractAddress} : { contractAddress: string }) => {
+const CardAvatar = ({ contractAddress, title, goal, providers, AmountRemaining }:
+  { contractAddress: string, title: string, goal: string, providers: string, AmountRemaining: string }) => {
   console.log("Avatar contract is ",contractAddress); // Output: "My contract"
-
+const progress = (parseInt(AmountRemaining) * 100)/parseInt(goal)
   const {
     isOpen: IsOpen1,
     onClose: OnClose1,
@@ -189,12 +190,12 @@ const CardAvatar = ({contractAddress} : { contractAddress: string }) => {
                   src={moonImg}
                   alt='The moon Image'
                 />
-                <Text ml='2'>The Moon</Text>
+                <Text ml='2'>{ title}</Text>
               </Flex>
-              <Text className=''>$2,000</Text>
+              <Text className=''>${goal}</Text>
               <Progress
                 className='rounded-full'
-                value={60}
+                value={progress}
                 w={80}
                 size='sm'
                 colorScheme='green'
@@ -211,7 +212,7 @@ const CardAvatar = ({contractAddress} : { contractAddress: string }) => {
                     src='https://bit.ly/code-beast'
                   />
                 </AvatarGroup>
-                <Text className='shrink-0'>+30 others.</Text>
+                <Text className='shrink-0'>{providers} backers.</Text>
               </Stack>
             </Flex>
             <ButtonGroup spacing={8} className='px-4 py-2 bg-white'>

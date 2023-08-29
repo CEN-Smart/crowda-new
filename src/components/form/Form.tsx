@@ -35,6 +35,7 @@ import {
   writeContract,
   getAccount,
   waitForTransaction,
+  watchContractEvent
 } from '@wagmi/core';
 import { factoryAbi } from '../../constants/index';
 import { parseEther } from 'viem';
@@ -42,6 +43,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
 import { useWeb3Modal } from '@web3modal/react';
 import { useRouter } from 'next/navigation';
+import { publicClient } from '../../providers/client'
+
 import server from "../../server"
 
 const FormPage = () => {
@@ -68,9 +71,29 @@ const FormPage = () => {
     setIsOpened(true);
   }
 
+
+
+
+//---------------------------watch contract event ---------------------------
+
+//---------------------------unwatch contract event ---------------------------
+
+
   //@ts-ignore
   async function createProject(amount, minAmount, percentage, stake, values) {
     if (isConnected) {
+     
+      // const unwatch = publicClient.watchContractEvent({
+      //   address: localhostAddr,
+      //   abi: factoryAbi,
+      //   eventName: 'CrowdSourceCreated',
+      //   args: { creator: address},
+      //   onLogs: logs => console.log('logs is',logs)
+      // })
+
+      
+
+
       const request = await prepareWriteContract({
         address: localhostAddr,
         abi: factoryAbi,
@@ -86,12 +109,25 @@ const FormPage = () => {
       });
       console.log(hash);
       if (data.status == 'success') {
-        await server.post(`docsAppend/${address}`, values)
-        await server.post(`append/${address}`, values)     
+        
+        const unwatch = watchContractEvent(
+          {
+            address: localhostAddr,
+            abi: factoryAbi,
+            eventName: 'CrowdSourceCreated',
+          },
+          //@ts-ignore
+          (log) => console.log('log is', log.args.contractAddress),
+        )
         console.log(data);
         setCompleted(true);
-        console.log(completed);
+        const Contractbyte = data.logs[1].topics[1]?.slice(-40)
+        const contractAddress = `0x${Contractbyte}`
+        console.log(contractAddress);
+        await server.post(`docsAppend/${contractAddress}`, values)
+        await server.post(`append/${contractAddress}`, values) 
         onOpen();
+        unwatch()
         return true;
       }
     } else {
@@ -191,6 +227,7 @@ const FormPage = () => {
               percentage: '',
               upload: '',
               stake: '',
+              creator: address
             }}
             onSubmit={async (values) =>
               await createProject(

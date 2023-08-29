@@ -36,7 +36,7 @@ import { usePathname, useSearchParams } from 'next/navigation'
 export default function SingleMarketCard() {
   const [Donaters, setDonaters] = useState([]) // see the array to loop through to display contributors
   const { isConnected } = getAccount()
-  const [AmountDonated, setAmountDonated] = useState(0);
+  const [AmountDonated, setAmountDonated] = useState('0');
 
   //const params = useRouter();
   
@@ -50,8 +50,6 @@ export default function SingleMarketCard() {
   const name = params!.get('name');
 
   
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
   
   async function donate(amount:string) {
     if (isConnected) {
@@ -61,7 +59,7 @@ export default function SingleMarketCard() {
         abi: malaikaAbi,
         functionName: 'donate',
         args: [],
-        value:parseEther(amount)
+        value: parseEther(amount.toString())
       });
       console.log('value is ', request);
       const { hash } = await writeContract(request);
@@ -72,6 +70,7 @@ export default function SingleMarketCard() {
       console.log(hash);
       if (data.status == 'success') {
         console.log(data);
+        alert("your donation was succesfull")
         return true;
       }
     }
@@ -85,6 +84,8 @@ export default function SingleMarketCard() {
       functionName: 'getHoldersArray',
       args: [],
     });
+    //@ts-ignore
+    setDonaters(receipt)
     return receipt
   } 
   async function getAmount() {
@@ -95,17 +96,17 @@ export default function SingleMarketCard() {
       functionName: 'getRemainderBalance',
       args: [],
     });
-    const response = await readContract({
-      //@ts-ignore
-      address: contractaddr,
-      abi: malaikaAbi,
-      functionName: 'getAmountNeeded',
-      args: [],
-    });
+    // const response = await readContract({
+    //   //@ts-ignore
+    //   address: contractaddr,
+    //   abi: malaikaAbi,
+    //   functionName: 'getAmountNeeded',
+    //   args: [],
+    // });
     //@ts-ignore
-    const request = response - howMuch
+    const request = BigInt(howMuch) - receipt
     console.log('getter is', request)
-    setAmountDonated(request);
+    setAmountDonated(request.toString());
     return request
   }
   useEffect(() => {
@@ -114,12 +115,13 @@ export default function SingleMarketCard() {
         const holders = await getHolders();
         console.log("holders are ", holders);
         //@ts-ignore
-        setDonaters(holders)
+        //setDonaters(holders)
         const amount: any = await getAmount()
+        console.log('amount is',amount)
       }
     }  
     updateUI();
-  }, [Donaters,AmountDonated]);
+  }, [isConnected]);
 
 
   
@@ -134,7 +136,7 @@ export default function SingleMarketCard() {
           </Heading>
           <Text>
             You are supporting this <Text as="strong">{title}</Text>. Your
-            will matter
+            support matters
           </Text>
 
           <Card
@@ -170,14 +172,21 @@ export default function SingleMarketCard() {
               </Stack>
               <Stack spacing={3}>
                 <Heading size="md" mt={6}>
-                  Current backers(3)
+                  Current backers({Donaters.length})
                 </Heading>
+                {/** list of donators */}
                 
-                <Text className="text-sm ">
-                  0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
-                  <span className="block font-bold">$500</span>
+                <ul>
+              {Donaters.map((item) => (
+                <li key={item} className="mt-3">
+                  <Text className="text-sm ">
+                  {item}
+                  <span className="block font-bold"></span>
                 </Text>
-                
+                </li>
+              ))}
+            </ul>
+
                 
                 <span className="block pb-8 font-bold border-b border-slate-600"></span>
               </Stack>
@@ -191,7 +200,7 @@ export default function SingleMarketCard() {
                   initialValues={{
                     howMuch: "",
                   }}
-                  onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+                  onSubmit={async(values) => await donate(values.howMuch)}
                 >
                   {({ handleSubmit, errors, touched, isSubmitting }) => (
                     <Form onSubmit={handleSubmit}>
@@ -200,12 +209,12 @@ export default function SingleMarketCard() {
                       >
                         <FormLabel htmlFor="howMuch">
                           Minimum buy-in for this project is ${minimum}
-                          <Link
+                          {/* <Link
                             className="underline transition duration-300 hover:no-underline"
                             href="/marketplace/marketId/learnmore"
                           >
                             Learn More
-                          </Link>
+                          </Link> */}
                         </FormLabel>
                         <Box border="1px solid gray" borderRadius="md">
                           <InputGroup>
@@ -217,7 +226,7 @@ export default function SingleMarketCard() {
                               as={Input}
                               name="howMuch"
                               id="howMuch"
-                              placeholder="500"
+                              placeholder={minimum}
                               type="number"
                               variant="outline"
                               validate={(value: string) => {

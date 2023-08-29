@@ -58,7 +58,8 @@ export default function Dashboard() {
   const [Providers, setProviders] = useState("")
   const [OwnerContract, setOwnerContract] = useState("");
   const [Nickname, setNickname] = useState('');
-  const [Data, setData] = useState('');
+  const [Data, setData] = useState([]);
+  const[Remainder, setRemainder] = useState(0)
 
   const localhostAddr = '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F';
   //@ts-ignore
@@ -142,6 +143,8 @@ export default function Dashboard() {
     });
     //@ts-ignore
     const request = response - receipt
+    //@ts-ignore
+    setRemainder(receipt)
     console.log('getter is', request)
     return request
   }
@@ -198,6 +201,7 @@ export default function Dashboard() {
     const {data:{data}} =  await server.get(`package/${address}`)
     if (data != undefined ) {
       console.log(data)
+      setData(data);
       return data
     }
   }
@@ -237,7 +241,7 @@ export default function Dashboard() {
       setNickname(`Hello ${nickname[0]},`)
       console.log('nickname is ', Nickname);
     }updateName()
-  },[address,Nickname])
+  },[address,Nickname,Data])
 
   return (
     <section>
@@ -305,9 +309,9 @@ export default function Dashboard() {
         isOpen={IsOpen2}
         isCentered
         icon={GrLink}
-        iconLabel='Change Address'
-        address='Current address:'
-        addressNumber={address}
+        iconLabel='Change Buy-in'
+        address='Current Buy-in:'
+        addressNumber={Data[5]}
       >
         <Formik
           initialValues={{
@@ -381,7 +385,13 @@ export default function Dashboard() {
             <DashboardCard bgColor='limegreen.400' icon={HiOutlineCurrencyDollar} iconLabel='Current balance' currencyValue={AmountRemaining} footerText='Available to withdraw' />
             <DashboardCard bgColor='gray.200' icon={TbUsersGroup} iconLabel='Total backers' currencyValue={Providers} link='view all' />
           </div>
-          <CardAvatar contractAddress={OwnerContract} />
+          <CardAvatar
+            contractAddress={OwnerContract}
+            title={Data[1]}
+            goal={Data[4]}
+            providers={Providers}
+            AmountRemaining = {AmountRemaining}
+          />
         </div>
       </Container>
     </section>

@@ -48,7 +48,7 @@ export default function MarketList() {
       }
     }  
     updateUI();
-  }, );
+  }, [isConnected]);
 
   
   return (

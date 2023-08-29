@@ -390,6 +390,19 @@
   },
   {
     "inputs": [],
+    "name": "getHoldersArray",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "holders",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getLatestPrice",
     "outputs": [
       {
