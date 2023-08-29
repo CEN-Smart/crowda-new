@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 
 
 export default function MarketList() {
-  const [Marketplace, setMarkeplace] = useState('');
+  const [Marketplace, setMarkeplace] = useState([]);
   const [DynamicData, setDynamicData] = useState('');
   const { isConnected } = getAccount();
 
@@ -17,32 +17,33 @@ export default function MarketList() {
   async function getMarket() {
     const { data: { data } } = await server.get('docsAll');
     if (data != undefined ) {
-      setMarkeplace(JSON.parse(data))
-    } else {
+      setMarkeplace(data)
       console.log(data)
-      return false
+
+    } else {
+      return data
     }
 
   }
 
-  async function getSingle(address:string) {
-    const { data: { data } } = await server.get(`/docsGet/${address}`);
-    if (data != undefined ) {
-      setDynamicData(JSON.parse(data))
-    } else {
-      console.log(data)
-      return false
-    }
-  }
+  // async function getSingle(address:string) {
+  //   const { data: { data } } = await server.get(`/docsGet/${address}`);
+  //   if (data != undefined ) {
+  //     setDynamicData(JSON.parse(data))
+  //   } else {
+  //     console.log(data)
+  //     return false
+  //   }
+  // }
   
 
   useEffect(() => {
     async function updateUI() {
       if (isConnected) {
         const response = await getMarket();
-        console.log("response are ", response);
+        console.log("marketplace are ", response);
         //@ts-ignore
-        const amount: any = await getSingle()
+        //const amount: any = await getSingle()
         console.log(amount)
       }
     }  
@@ -67,25 +68,21 @@ export default function MarketList() {
         base: "repeat(1, 1fr)",
         md: "repeat(2, 1fr)",
         lg: "repeat(3, 1fr)",
-      }} gap={5} >
-        <GridItem>
-          <MarketCard/>
-        </GridItem>
-        <GridItem>
-          <MarketCard/>
-        </GridItem>
-        <GridItem>
-          <MarketCard/>
-        </GridItem>
-        <GridItem>
-          <MarketCard/>
-        </GridItem>
-        <GridItem>
-          <MarketCard/>
-        </GridItem>
-        <GridItem>
-          <MarketCard/>
-        </GridItem>
+          }} gap={5} >
+            {Marketplace.map((item) => (
+              <GridItem key={item}>
+                <MarketCard
+                  contractaddr={item["_id"]}
+                  title={item["title"]}
+                  description={item["description"]}
+                  howMuch={item["howMuch"]}
+                  minimum={item['minimum']}
+                  name={item['name']}
+                />
+              </GridItem>
+            ))}
+        
+        
       </Grid>
        </Box>
       </Container>

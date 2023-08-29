@@ -86,8 +86,8 @@ const FormPage = () => {
       });
       console.log(hash);
       if (data.status == 'success') {
-        await server.post(`append/${address}`, values)
-        await server.post(`docsAppend/${address}`,values)
+        await server.post(`docsAppend/${address}`, values)
+        await server.post(`append/${address}`, values)     
         console.log(data);
         setCompleted(true);
         console.log(completed);
