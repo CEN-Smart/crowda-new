@@ -27,20 +27,37 @@ import { factoryAbi, malaikaAbi } from '@/constants';
 import { prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core';
 import { useState, useEffect } from "react";
 import { parseEther } from 'viem';
+import { useRouter } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation'
+
 
 
 
 export default function SingleMarketCard() {
-  const [ContractAddr, setContractAddr] = useState("")
   const [Donaters, setDonaters] = useState([]) // see the array to loop through to display contributors
-  const { address, isConnected } = getAccount()
-  const [AmountDonated, setAmountDonated] = useState("");
+  const { isConnected } = getAccount()
+  const [AmountDonated, setAmountDonated] = useState(0);
+
+  //const params = useRouter();
+  
+  const params = useSearchParams();
+
+  const contractaddr = params!.get('contractaddr');
+  const title = params!.get('title');
+  const description = params!.get('description');
+  const howMuch = params!.get('howMuch');
+  const minimum = params!.get('minimum');
+  const name = params!.get('name');
+
+  
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   
   async function donate(amount:string) {
     if (isConnected) {
       const request = await prepareWriteContract({  
         //@ts-ignore
-        address: OwnerContract,
+        address: contractaddr,
         abi: malaikaAbi,
         functionName: 'donate',
         args: [],
@@ -63,42 +80,44 @@ export default function SingleMarketCard() {
   async function getHolders() {
     const receipt = await readContract({
       //@ts-ignore
-      address: contractAddress,
+      address: contractaddr,
       abi: malaikaAbi,
       functionName: 'getHoldersArray',
       args: [],
     });
     return receipt
   } 
-  async function getAmount(contractAddress: string) {
+  async function getAmount() {
     const receipt = await readContract({
       //@ts-ignore
-      address: contractAddress,
+      address: contractaddr,
       abi: malaikaAbi,
       functionName: 'getRemainderBalance',
       args: [],
     });
     const response = await readContract({
       //@ts-ignore
-      address: contractAddress,
+      address: contractaddr,
       abi: malaikaAbi,
       functionName: 'getAmountNeeded',
       args: [],
     });
     //@ts-ignore
-    const request = response - receipt
+    const request = response - howMuch
     console.log('getter is', request)
+    setAmountDonated(request);
     return request
   }
   useEffect(() => {
-    async function updateUI() {      
+    async function updateUI() {
+      if (isConnected) {
         const holders = await getHolders();
-        console.log("holders are ",holders);
+        console.log("holders are ", holders);
         //@ts-ignore
-      setDonaters(holders) 
-      const amount:any = await getAccount()
-      setAmountDonated(amount);
-      }    
+        setDonaters(holders)
+        const amount: any = await getAmount()
+      }
+    }  
     updateUI();
   }, [Donaters,AmountDonated]);
 
@@ -111,10 +130,10 @@ export default function SingleMarketCard() {
       <Box className="px-4 pt-32 mx-auto lg:px-12 md:px-8">
         <Box>
           <Heading as="h3" mb={2}>
-            The Moon project
+            The {title}
           </Heading>
           <Text>
-            You are supporting this <Text as="strong">Moon project</Text>. Your
+            You are supporting this <Text as="strong">{title}</Text>. Your
             will matter
           </Text>
 
@@ -130,13 +149,10 @@ export default function SingleMarketCard() {
             />
             <CardBody>
               <Stack mt="6" spacing="3">
-                <Text>Created by Poppins</Text>
-                <Heading size="lg">Moon</Heading>
+                <Text>Created by { name }</Text>
+                <Heading size="lg">{title}</Heading>
                 <Text>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Libero incidunt, quasi facere in quos accusantium laboriosam
-                  placeat id eum ad dicta illo ex? Ad voluptates enim impedit
-                  nobis ut velit!
+                 {description}
                 </Text>
                 <Box mt="4">
                   <Progress
@@ -147,8 +163,8 @@ export default function SingleMarketCard() {
                   />
 
                   <Text className="font-semibold" fontSize="md">
-                    <span className="text-slate-600">$1500 raised of</span>{" "}
-                    $2000
+                    <span className="text-slate-600">${AmountDonated} raised of</span>{" "}
+                    ${howMuch}
                   </Text>
                 </Box>
               </Stack>
@@ -156,20 +172,14 @@ export default function SingleMarketCard() {
                 <Heading size="md" mt={6}>
                   Current backers(3)
                 </Heading>
+                
                 <Text className="text-sm ">
                   0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
                   <span className="block font-bold">$500</span>
                 </Text>
-                <Text className="text-sm ">
-                  0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
-                  <span className="block font-bold">$500</span>
-                </Text>
-                <Text className="text-sm ">
-                  0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E{" "}
-                  <span className="block pb-8 font-bold border-b border-slate-600">
-                    $500
-                  </span>
-                </Text>
+                
+                
+                <span className="block pb-8 font-bold border-b border-slate-600"></span>
               </Stack>
             </CardBody>
             <CardFooter className="flex flex-col items-start justify-between -mt-8 lg:flex-row ">
@@ -189,7 +199,7 @@ export default function SingleMarketCard() {
                         isInvalid={!!errors.howMuch && touched.howMuch}
                       >
                         <FormLabel htmlFor="howMuch">
-                          Minimum buy-in for this project is $500.{" "}
+                          Minimum buy-in for this project is ${minimum}
                           <Link
                             className="underline transition duration-300 hover:no-underline"
                             href="/marketplace/marketId/learnmore"
@@ -243,11 +253,10 @@ export default function SingleMarketCard() {
                   Contact address
                 </Heading>
                 <Text className="text-sm break-all ">
-                  {ContractAddr}
-                  0xaB6B4b11378a57933333e4Acfdc45567Dd78F14E
+                  {contractaddr}
                   <Link
                     className="underline transition block font-[500] hover:no-underline duration-300"
-                    href={`https://www.etherscan.com/${ContractAddr}`}
+                    href={`https://www.etherscan.com/${contractaddr}`}
                   >
                     View on etherscan
                   </Link>

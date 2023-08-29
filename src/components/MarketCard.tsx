@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { PiArrowUpRightBold } from "react-icons/pi";
 import Link from "next/link";
-import { useRouter } from 'next/router';
 
 
 export default function MarketCard(
@@ -58,7 +57,10 @@ export default function MarketCard(
           <Text fontSize="sm">created by {name}</Text>
           <Link
             className="px-4 py-2 text-white transition duration-300 bg-black rounded-md hover:font-semibold shadow-primary-inner hover:shadow-primary-inner-lg hover:bg-opacity-80"
-            href={`/marketplace/marketId`}
+            href={{
+              pathname: `/marketplace/marketId`,
+              query:{contractaddr:contractaddr, title: title, description: description, howMuch: howMuch, minimum:minimum, name:name}
+            }}
           >
             <div className="flex items-center gap-1">
               View <PiArrowUpRightBold className="inline-block" />
