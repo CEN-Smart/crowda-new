@@ -57,7 +57,7 @@ const FormPage = () => {
   const sepoliapriceFeed = '0x694AA1769357215DE4FAC081bf1f309aDC325306';
   const localhostFeed = '0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e';
   const localhostAddr = '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F';
-  const sepolia = '0x5bb4758ad76faAa34950fd6EEF0a2fC963f88b2a';
+  const sepolia = '0xAa08e1fdc5c1b62343088a123173692F70f9930C';
 
   let [isOpened, setIsOpened] = useState(false);
   let [completed, setCompleted] = useState(false);
