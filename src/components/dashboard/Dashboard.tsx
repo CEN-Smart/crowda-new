@@ -59,7 +59,6 @@ export default function Dashboard() {
   const [OwnerContract, setOwnerContract] = useState("");
   const [Nickname, setNickname] = useState('');
   const [Data, setData] = useState([]);
-  const[Remainder, setRemainder] = useState(0)
 
   const localhostAddr = '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F';
   //@ts-ignore
@@ -98,7 +97,11 @@ export default function Dashboard() {
         await server.post(`update/${newOwner}`, values)
         await server.delete(`del/${address}`)
         console.log(data);
+        alert("Transaction was Succesful")
         return true;
+      } else {
+        alert("Transaction failed, please try again")
+
       }
     }
   }
@@ -121,7 +124,11 @@ export default function Dashboard() {
       console.log(hash);
       if (data.status == 'success') {
         console.log(data);
+        alert("Transaction was Succesful")
         return true;
+      } else {
+        alert("Transaction failed, please try again")
+
       }
     }
   }

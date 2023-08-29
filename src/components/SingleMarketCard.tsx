@@ -72,6 +72,8 @@ export default function SingleMarketCard() {
         console.log(data);
         alert("your donation was succesfull")
         return true;
+      } else {
+        alert("Your transaction could not be processed, please try again")
       }
     }
   }

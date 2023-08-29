@@ -61,6 +61,7 @@ const progress = (parseInt(AmountRemaining) * 100)/parseInt(goal)
       if (data.status == 'success') {
         //delete contract from database
         console.log(data);
+        alert("Contract has been cancelled and donations reverted")
         return true
       }
 
@@ -83,7 +84,12 @@ const progress = (parseInt(AmountRemaining) * 100)/parseInt(goal)
       console.log(hash);
       if (data.status == 'success') {
         console.log(data);
+        alert("Withdrawal was succesfull")
+
         return true
+      } else {
+        alert("Withdrawal was not succesfull, please try again")
+
       }
 
   }
