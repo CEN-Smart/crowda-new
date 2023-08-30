@@ -10,16 +10,61 @@ import Image from 'next/image';
 import heroImg from '../../public/bgImage.svg';
 import Link from 'next/link';
 import { useColorMode } from '@chakra-ui/react';
+import server from "../../src/server"
+import { useState, useEffect } from "react"
+import { getAccount } from "@wagmi/core";
 
 export default function Home() {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === 'light' ? 'white' : 'slate.800';
   const btnBgColor = colorMode === 'light' ? 'black' : 'white';
   const textColor = colorMode === 'light' ? 'black' : 'white';
+
+
+  const [Marketplace, setMarkeplace] = useState([]);
+  const [DynamicData, setDynamicData] = useState('');
+  const [Items,setItems] = useState([])
+  const { isConnected } = getAccount();
+
+
+  async function getMarket() {
+    const { data: { data } } = await server.get('docsAll');
+    if (data != undefined ) {
+      setMarkeplace(data)
+      setItems(data.slice(0,3))
+      console.log(data)
+      return data
+    } else {
+      console.log("bad response")
+    }
+
+  }
+
+  useEffect(() => {
+    async function updateUI() {
+      if (isConnected) {
+        const response = await getMarket();
+        console.log("marketplace are ", response);
+        //@ts-ignore
+        //const amount: any = await getSingle()
+        console.log(amount)
+      }
+    }  
+    updateUI();
+  }, [isConnected]);
+
+
+
+
   return (
     <main className='relative overflow-hidden'>
+<<<<<<< HEAD
       <p className='absolute top-[3.5rem] md:top-[4.5rem] animate-marquee whitespace-nowrap w-full '>
         Welcome to Malaika
+=======
+      <p className='absolute top-20 animate-marquee whitespace-nowrap w-full '>
+        Welcome to Malaika, please connect your wallet for a full experience
+>>>>>>> 78162969a5219d7cab0054b1040fd42d39d947d6
       </p>
       <CustomHeading
         className={`text-${textColor as string} bg-${bgColor as string} pt-28`}
@@ -67,9 +112,21 @@ export default function Home() {
         />
       </Container>
       <Container className=''>
+        {
+          Items.map((item) => (
+            <CardComponent key={item}
+                  contractaddr={item["_id"]}
+                  title={item["title"]}
+                  description={item["description"]}
+                  howMuch={item["howMuch"]}
+                  minimum={item['minimum']}
+                  name={item['name']}
+            />
+          ))
+        }
+        {/* <CardComponent />
         <CardComponent />
-        <CardComponent />
-        <CardComponent />
+        <CardComponent /> */}
       </Container>
       <Container className='py-12 text-center'>
         <Link

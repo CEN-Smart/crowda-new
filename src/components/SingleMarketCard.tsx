@@ -267,7 +267,7 @@ export default function SingleMarketCard() {
                   {contractaddr}
                   <Link
                     className="underline transition block font-[500] hover:no-underline duration-300"
-                    href={`https://www.sepolia.etherscan.io/address/${contractaddr}`}
+                    href={`https:/sepolia.etherscan.io/address/${contractaddr}`}
                   >
                     View on etherscan
                   </Link>
