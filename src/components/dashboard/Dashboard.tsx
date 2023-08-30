@@ -170,7 +170,7 @@ export default function Dashboard() {
 
   async function isContract(contractAddress: string, msgSender: string) {
     const request = await readContract({
-      address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
+      address: sepoliaAddress,
       abi: factoryAbi,
       functionName: 'isOwner',
       args: [contractAddress, msgSender],
@@ -180,7 +180,7 @@ export default function Dashboard() {
 
   async function isCreator() {
     const request = await readContract({
-      address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
+      address: sepoliaAddress,
       abi: factoryAbi,
       functionName: 'isCreator',
       args: [address],
@@ -188,7 +188,7 @@ export default function Dashboard() {
     console.log('isCreator is', request);
     if (request) {
       const marketplace = await readContract({
-        address: '0xd3924Aed3dbE4bdBC12FBc5917bBa7202141FE6F',
+        address: sepoliaAddress,
         abi: factoryAbi,
         functionName: 'getMarketPlace',
         args: [],
