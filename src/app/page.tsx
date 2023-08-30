@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <main className='relative overflow-hidden'>
       <p className='absolute top-20 animate-marquee whitespace-nowrap w-full '>
-        Welcome to Malaika
+        Welcome to Malaika, please connect your wallet for a full experience
       </p>
       <CustomHeading
         className={`text-${textColor as string} bg-${bgColor as string} pt-28`}
