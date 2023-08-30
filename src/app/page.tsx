@@ -17,7 +17,10 @@ export default function Home() {
   const btnBgColor = colorMode === 'light' ? 'black' : 'white';
   const textColor = colorMode === 'light' ? 'black' : 'white';
   return (
-    <main>
+    <main className='relative overflow-hidden'>
+      <p className='absolute top-20 animate-marquee whitespace-nowrap w-full '>
+        Welcome to Malaika
+      </p>
       <CustomHeading
         className={`text-${textColor as string} bg-${bgColor as string} pt-28`}
         primaryHeading='Unleash the Power of Your Purpose: Crowdfund with Malaika!'
@@ -29,7 +32,6 @@ export default function Home() {
         rightBtnClassName='hover:font-semibold'
         leftBtnClassName='hover:font-semibold'
       />
-
       <Container className={`pb-16 bg-${bgColor as string}`}>
         <Image
           className='object-cover rounded-lg'
@@ -64,13 +66,11 @@ export default function Home() {
           title={`The Malaika platform is the best way to invest in projects and get rewarded for your support. `}
         />
       </Container>
-
       <Container className=''>
         <CardComponent />
         <CardComponent />
         <CardComponent />
       </Container>
-
       <Container className='py-12 text-center'>
         <Link
           href='/marketplace'
@@ -90,7 +90,6 @@ export default function Home() {
         terH='Rewards and Impact'
         terT={`Backers on Malaika not only support meaningful projects but also receive rewards in returns, making their contributions even more fulfilling. Join Malaika to be a part of a positive impact on the projects and causes you care about`}
       />
-
       <Container className={`p-10 text-${textColor as string} bg-gray-800`}>
         <CustomHeading
           className={`py-8 mx-auto bg-${
