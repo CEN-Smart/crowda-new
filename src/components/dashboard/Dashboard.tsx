@@ -244,7 +244,7 @@ export default function Dashboard() {
     async function updateName() {
       //@ts-ignore
       const nickname = await getPackage(address);
-      setData(nickname)
+      //setData(nickname)
       console.log(nickname)
       setNickname(`Hello ${nickname[0]},`)
       console.log('nickname is ', Nickname);

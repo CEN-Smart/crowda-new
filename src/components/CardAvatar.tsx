@@ -22,13 +22,15 @@ import CustomModal from './CustomModal';
 import { useRef,useState } from 'react';
 import { getAccount, prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core'
 import { factoryAbi, malaikaAbi } from '@/constants'
+import server from '@/server';
 
 
 
 const CardAvatar = ({ contractAddress, title, goal, providers, AmountRemaining }:
   { contractAddress: string, title: string, goal: string, providers: string, AmountRemaining: string }) => {
   console.log("Avatar contract is ",contractAddress); // Output: "My contract"
-const progress = (parseInt(AmountRemaining) * 100)/parseInt(goal)
+
+  const progress = 0 || (parseInt(AmountRemaining) * 100) / parseInt(goal)
   const {
     isOpen: IsOpen1,
     onClose: OnClose1,
@@ -60,6 +62,8 @@ const progress = (parseInt(AmountRemaining) * 100)/parseInt(goal)
       console.log(hash);
       if (data.status == 'success') {
         //delete contract from database
+        await server.delete(`del/${address}`)
+        await server.delete(`docsDel/${contractAddress}`)
         console.log(data);
         alert("Contract has been cancelled and donations reverted")
         return true
@@ -201,7 +205,7 @@ const progress = (parseInt(AmountRemaining) * 100)/parseInt(goal)
               <Text className=''>${goal}</Text>
               <Progress
                 className='rounded-full'
-                value={progress}
+                value ={progress}
                 w={80}
                 size='sm'
                 colorScheme='green'
