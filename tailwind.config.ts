@@ -30,7 +30,7 @@ const config: Config = {
       },
     },
   },
-  tailwinFunctions: ['classNames'],
+  tailwindFunctions: ['classNames'],
   plugins: [],
   corePlugins: {
     preflight: false,
