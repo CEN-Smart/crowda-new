@@ -18,7 +18,7 @@ export default function Home() {
   const textColor = colorMode === 'light' ? 'black' : 'white';
   return (
     <main className='relative overflow-hidden'>
-      <p className='absolute top-20 animate-marquee whitespace-nowrap w-full '>
+      <p className='absolute top-[3.5rem] md:top-[4.5rem] animate-marquee whitespace-nowrap w-full '>
         Welcome to Malaika
       </p>
       <CustomHeading
